@@ -12,12 +12,13 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    type_id: {
-      type: DataTypes.INTEGER,
+    type_rooms: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
+
     status: {
-      type: DataTypes.ENUM("disponible", "ocupada", "mantenimiento"),
+      type: DataTypes.ENUM("available", "busy", "maintenance"),
       allowNull: false,
     },
     price_per_night: {
@@ -31,6 +32,7 @@ module.exports = (sequelize) => {
     max_capacity: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      min: 1,
     },
     is_active: {
       type: DataTypes.BOOLEAN,

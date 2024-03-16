@@ -16,10 +16,10 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    guest_profile_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
+    // guest_profile_id: {
+    //   type: DataTypes.UUID,
+    //   allowNull: false,
+    // },
     check_in_date: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -36,7 +36,9 @@ module.exports = (sequelize) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    room_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   });
 };
-
-// agregar roomid que relacione
