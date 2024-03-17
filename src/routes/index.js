@@ -1,20 +1,17 @@
 const { Router } = require("express");
-const roomsController = require('../controllers/roomsController');
+const roomsControllers = require('../controllers/roomsControllers');
 
-const routeInit = () => {
   const router = Router();
-
   
   router.get("/", (req, res) => {
     res.status(200).json("Bienvenido");
   });
 
  
-  router.post('/rooms', roomsController.createRoom);
-  router.get('/rooms', roomsController.listRooms);  
-  router.get('/rooms/:id', roomsController.getRoomDetails);
+  router.post('/rooms', roomsControllers.createRoom);
+  router.get('/rooms', roomsControllers.listRooms);  
+  router.get('/rooms/:id', roomsControllers.getRoomDetails);
+  // router.put('/rooms/:id', roomsControllers.updateRoom);
 
-  return router;
-};
 
-module.exports = routeInit;
+module.exports = router;

@@ -9,6 +9,8 @@ const server = express();
 server.name = "API";
 
 server.use(morgan("dev"));
+server.use(express.json());
+
 server.use("/", routes);
 //aaa
 

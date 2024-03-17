@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
     room_number: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     type_rooms: {
       type: DataTypes.TEXT,
