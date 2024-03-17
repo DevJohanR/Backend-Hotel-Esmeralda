@@ -2,10 +2,10 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { USER, PASSWORD, HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
 const sequelize = new Sequelize(
-  `postgres://${USER}:${PASSWORD}@${HOST}/hotel`,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/hotel`,
   { logging: false } //esto es para evitar que cada consulta se imprima en consola
 );
 
