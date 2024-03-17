@@ -33,9 +33,22 @@ const { room_details } = sequelize.models;
 const { rooms } = sequelize.models;
 const { users } = sequelize.models;
 
-// relaciones
-users.hasOne(guest_profile, { foreignKey: "id" });
-guest_profile.belongsTo(users, { foreignKey: "id" });
+// RELACIONES
+
+users.hasOne(guest_profile, { foreignKey: "user_id" });
+guest_profile.belongsTo(users, { foreignKey: "user_id" });
+
+reservations.belongsTo(guest_profile, { foreignKey: "guest_profile_id" });
+guest_profile.hasMany(reservations, { foreignKey: "guest_profile_id" });
+
+reservations.belongsTo(rooms, { foreignKey: "room_id" });
+rooms.hasMany(reservations, { foreignKey: "room_id" });
+
+users.hasMany(reservations, { foreignKey: "user_id" });
+reservations.belongsTo(users, { foreignKey: "user_id" });
+
+room_details.belongsTo(rooms, { foreignKey: "room_id" });
+rooms.hasOne(room_details, { foreignKey: "room_id" });
 
 module.exports = {
   ...sequelize.models,
