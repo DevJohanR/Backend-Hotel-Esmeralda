@@ -19,6 +19,10 @@ module.exports = (sequelize) => {
       type: DataTypes.FLOAT,
       allowNull: false
     },
+    description: { 
+      type: DataTypes.TEXT, 
+      allowNull: true 
+    },
     imageUrl: {
       type: DataTypes.STRING,
       allowNull: false
