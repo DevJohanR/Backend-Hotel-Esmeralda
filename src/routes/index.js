@@ -2,6 +2,7 @@ const { Router } = require("express");
 const roomsController = require("../controllers/roomsController");
 const reservationsController = require("../controllers/reservationsController");
 const roomTypesController = require("../controllers/roomTypesController");
+const dishesRoutes = require("./dishes");
 
 const router = Router();
 
@@ -20,6 +21,8 @@ router.put("/roomsTypes/:id", roomTypesController.updateRoomTypeById);
 router.delete("/roomsTypes/:id", roomTypesController.deleteRoomTypeById);
 
 router.put("/rooms/:id", roomsController.updateRoom);
+
+router.use('/api', dishesRoutes);
 
 // router.post('/reservations', reservationsController.createReservation);
 
