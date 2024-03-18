@@ -51,7 +51,7 @@ reservations.belongsTo(users, { foreignKey: "user_id" });
 room_details.belongsTo(rooms, { foreignKey: "room_id" });
 rooms.hasOne(room_details, { foreignKey: "room_id" });
 
-room_types.belongsTo(rooms, { foreignKey: "id" });
+room_types.hasMany(rooms, { foreignKey: "type_id" });
 rooms.belongsTo(rooms, { foreignKey: "type_id" });
 
 module.exports = {

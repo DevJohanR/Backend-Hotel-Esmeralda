@@ -10,16 +10,16 @@ exports.createRoomType = async (req, res) => {
       description: req.body.description,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Room Type Created successfully!",
       roomType: newRoomType,
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
-      res.status(400).json({ message: "The Room Type already exist!" });
+      return res.status(400).json({ message: "The Room Type already exist!" });
     } else {
       console.error(error);
-      res.status(500).json({ message: "Internal Server Error" });
+      return res.status(500).json({ message: "Internal Server Error" });
     }
   }
 };
@@ -32,9 +32,9 @@ exports.listRoomTypes = async (req, res) => {
     if (id) whereClause.id = id;
 
     const allRoomTypes = await room_types.findAll({ where: whereClause });
-    res.status(200).send(allRoomTypes);
+    return res.status(200).send(allRoomTypes);
   } catch (error) {
-    res.status(400).send(error.message);
+    return res.status(400).send(error.message);
   }
 };
 
@@ -56,10 +56,10 @@ exports.updateRoomTypeById = async (req, res) => {
     );
     await transaction.commit();
     if (result > 0) res.status(200).send("Room Type updated successfully!");
-    else res.status(500).send("Error updating room type");
+    else return res.status(500).send("Error updating room type");
   } catch (error) {
     await transaction.rollback();
-    res.status(500).send("Error updating room: " + error.message);
+    return res.status(500).send("Error updating room: " + error.message);
   }
 };
 
@@ -70,7 +70,7 @@ exports.deleteRoomTypeById = async (req, res) => {
     const { id } = req.params;
     const { verification } = req.body;
     if (verification !== "admin")
-      res
+      return res
         .status(400)
         .send("Please send the admin verification to perform this action.");
     const roomType = await room_types.findByPk(id, { transaction });
@@ -83,9 +83,9 @@ exports.deleteRoomTypeById = async (req, res) => {
     await room_types.destroy({ where: { id: id } }, { transaction });
 
     await transaction.commit();
-    res.status(200).send("Room type deleted successfully");
+    return res.status(200).send("Room type deleted successfully");
   } catch (error) {
     await transaction.rollback();
-    res.status(500).send("Error deleting room type");
+    return res.status(500).send("Error deleting room type");
   }
 };
