@@ -3,6 +3,7 @@ const roomsController = require("../controllers/roomsController");
 const reservationsController = require("../controllers/reservationsController");
 const roomTypesController = require("../controllers/roomTypesController");
 const dishesRoutes = require("./dishes");
+const path = require("path");
 
 const router = Router();
 
@@ -22,7 +23,9 @@ router.delete("/roomsTypes/:id", roomTypesController.deleteRoomTypeById);
 
 router.put("/rooms/:id", roomsController.updateRoom);
 
-router.use('/api', dishesRoutes);
+router.use("/api", dishesRoutes);
+
+// Reservas
 
 // router.post('/reservations', reservationsController.createReservation);
 
