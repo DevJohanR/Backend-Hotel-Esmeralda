@@ -13,8 +13,8 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    type_rooms: {
-      type: DataTypes.TEXT,
+    type_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
 
