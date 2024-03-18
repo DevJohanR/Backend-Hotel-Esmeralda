@@ -2,10 +2,10 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { USER, PASSWORD, HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
 const sequelize = new Sequelize(
-  `postgres://${USER}:${PASSWORD}@${HOST}/hotel`,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/hotel`,
   { logging: false } //esto es para evitar que cada consulta se imprima en consola
 );
 
@@ -31,6 +31,7 @@ const { guest_profile } = sequelize.models;
 const { reservations } = sequelize.models;
 const { room_details } = sequelize.models;
 const { rooms } = sequelize.models;
+const { room_types } = sequelize.models;
 const { users } = sequelize.models;
 
 // RELACIONES
@@ -49,6 +50,9 @@ reservations.belongsTo(users, { foreignKey: "user_id" });
 
 room_details.belongsTo(rooms, { foreignKey: "room_id" });
 rooms.hasOne(room_details, { foreignKey: "room_id" });
+
+room_types.hasMany(rooms, { foreignKey: "type_id" });
+rooms.belongsTo(rooms, { foreignKey: "type_id" });
 
 module.exports = {
   ...sequelize.models,

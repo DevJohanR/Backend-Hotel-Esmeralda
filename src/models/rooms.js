@@ -2,7 +2,7 @@ const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  sequelize.define("rooms", {
+  return sequelize.define("rooms", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -11,9 +11,10 @@ module.exports = (sequelize) => {
     room_number: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
-    type_rooms: {
-      type: DataTypes.TEXT,
+    type_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
 
