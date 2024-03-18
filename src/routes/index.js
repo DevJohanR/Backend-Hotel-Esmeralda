@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const roomsController = require("../controllers/roomsController");
 const reservationsController = require("../controllers/reservationsController");
+const roomTypesController = require("../controllers/roomTypesController");
 
 const router = Router();
 
@@ -12,6 +13,12 @@ router.post("/rooms", roomsController.createRoom);
 router.get("/rooms", roomsController.listRooms);
 router.get("/rooms/:id", roomsController.getRoomDetails);
 router.delete("/rooms/:id", roomsController.deleteRoom);
+
+router.post("/roomsTypes", roomTypesController.createRoomType);
+router.get("/roomsTypes", roomTypesController.listRoomTypes);
+router.get("/roomsTypes/:id", roomTypesController.getTypeInfoById);
+router.put("/roomsTypes/:id", roomTypesController.updateRoomTypeById);
+router.delete("/roomsTypes/:id", roomTypesController.deleteRoomTypeById);
 
 router.put("/rooms/:id", roomsController.updateRoom);
 
