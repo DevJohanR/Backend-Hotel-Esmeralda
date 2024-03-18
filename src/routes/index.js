@@ -16,7 +16,6 @@ router.delete("/rooms/:id", roomsController.deleteRoom);
 
 router.post("/roomsTypes", roomTypesController.createRoomType);
 router.get("/roomsTypes", roomTypesController.listRoomTypes);
-router.get("/roomsTypes/:id", roomTypesController.getTypeInfoById);
 router.put("/roomsTypes/:id", roomTypesController.updateRoomTypeById);
 router.delete("/roomsTypes/:id", roomTypesController.deleteRoomTypeById);
 

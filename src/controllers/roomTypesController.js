@@ -1,4 +1,4 @@
-const { rooms, room_details } = require("../db");
+const { rooms, room_details, room_types } = require("../db");
 const { connect } = require("../db");
 
 // Crear
@@ -23,107 +23,69 @@ exports.createRoomType = async (req, res) => {
     }
   }
 };
-// Listar habitaciones
+// Get roomTypes(No parameters=all, admitted parameters: name, id)
 exports.listRoomTypes = async (req, res) => {
   try {
-    const { status, type_rooms } = req.query;
+    const { name, id } = req.query;
     const whereClause = {};
-    if (status) whereClause.status = status;
-    if (type_rooms) whereClause.type_rooms = type_rooms;
+    if (name) whereClause.name = name;
+    if (id) whereClause.id = id;
 
-    const allRooms = await rooms.findAll({ where: whereClause });
-    res.status(200).send(allRooms);
+    const allRoomTypes = await room_types.findAll({ where: whereClause });
+    res.status(200).send(allRoomTypes);
   } catch (error) {
     res.status(400).send(error.message);
   }
 };
 
-// Obtener detalles de una habitación
-exports.getTypeInfoById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const room = await rooms.findByPk(id, {
-      include: [{ model: room_details, as: "room_detail" }],
-    });
-    if (!room) {
-      return res.status(404).send("Room not found");
-    }
-    res.status(200).send(room);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-};
-
-// Actualizar una habitación
+// Update RoomType
 exports.updateRoomTypeById = async (req, res) => {
   const transaction = await connect.transaction();
   try {
     const { id } = req.params;
-    const { roomData, roomDetailsData } = req.body;
+    const { name, description } = req.body;
 
-    let room = await rooms.findByPk(id, { transaction });
-    if (!room) {
+    let roomType = await room_types.findByPk(id, { transaction });
+    if (!roomType) {
       await transaction.rollback();
       return res.status(404).send("Room not found");
     }
-    await rooms.update(roomData, { where: { id: id }, transaction });
-    if (roomDetailsData) {
-      await room_details.update(roomDetailsData, {
-        where: { room_id: id },
-        transaction,
-      });
-    }
+    const result = await room_types.update(
+      { name: name, description: description },
+      { where: { id: id }, transaction }
+    );
     await transaction.commit();
-    res.status(200).send("Room updated successfully");
+    if (result > 0) res.status(200).send("Room Type updated successfully!");
+    else res.status(500).send("Error updating room type");
   } catch (error) {
     await transaction.rollback();
     res.status(500).send("Error updating room: " + error.message);
   }
-  //Ejemplo de como se envia por postMan el body para actualizar la data en ambas tablas
-  // {
-  //     "roomData": {
-  //       "room_number": "102",
-  //       "type_rooms": "suite",
-  //       "status": "busy",
-  //       "price_per_night": 250,
-  //       "description": "Una suite cómoda con vista al mar",
-  //       "max_capacity": 4
-  //     },
-  //     "roomDetailsData": {
-  //       "single_bed": 2,
-  //       "double_bed": 1,
-  //       "air_conditioning": true,
-  //       "jacuzzi": false,
-  //       "internet_connection": true,
-  //       "tv": false,
-  //       "minibar": true,
-  //       "phone": true
-  //     }
-  //   }
 };
 
-//Eliminar Habitacion
+//Delete Room Type
 exports.deleteRoomTypeById = async (req, res) => {
   const transaction = await connect.transaction();
   try {
     const { id } = req.params;
-
-    const room = await rooms.findByPk(id, { transaction });
-    if (!room) {
+    const { verification } = req.body;
+    if (verification !== "admin")
+      res
+        .status(400)
+        .send("Please send the admin verification to perform this action.");
+    const roomType = await room_types.findByPk(id, { transaction });
+    if (!roomType) {
       await transaction.rollback();
-      return res.status(404).send("Room not found");
+      return res.status(404).send("Room Type not found");
     }
 
-    // Eliminar primero los detalles de la habitación
-    await room_details.destroy({ where: { room_id: id } }, { transaction });
-
-    // Ahora eliminar la habitación
-    await room.destroy({ transaction });
+    // Delete room type
+    await room_types.destroy({ where: { id: id } }, { transaction });
 
     await transaction.commit();
-    res.status(200).send("Room deleted successfully");
+    res.status(200).send("Room type deleted successfully");
   } catch (error) {
     await transaction.rollback();
-    res.status(500).send("Error deleting room");
+    res.status(500).send("Error deleting room type");
   }
 };
