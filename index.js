@@ -4,7 +4,7 @@ const initializers = require("./src/initializers");
 const { connect } = require("./src/db");
 const { PORT } = process.env || 4000;
 
-connect.sync({ force: true }).then(() => {
+connect.sync({ force: false }).then(() => {
   console.log(`Database connected`);
 
   initializers

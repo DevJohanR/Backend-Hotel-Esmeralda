@@ -22,19 +22,25 @@ exports.getDishes = async (req, res) => {
 exports.editDishes = async (req, res) => {
   try {
     const { id } = req.params;
-    const dish = await dish.findByPk(id)
-    const editDishes = await dish.update(req.body)
-    const dishUpdated = await dish.findByPk(id)
+    const dishToUpdate = await dish.findByPk(id); 
+    if (!dishToUpdate) {
+      return res.status(404).json({ message: "Plato no encontrado." });
+    }
+    const editDish = await dishToUpdate.update(req.body); 
+    const dishUpdated = await dish.findByPk(id); 
 
-    if (editDishes){
-      res.status(200).json({...dishUpdated,message:"Plato actualizado correctamente."})}
+    if (editDish) {
+      return res.status(200).json({ ...dishUpdated.toJSON(), message: "Plato actualizado correctamente." }); // Se ha agregado .toJSON() para obtener solo los datos del plato actualizado
+    } else {
+      return res.status(400).json({ message: "No se pudo actualizar el plato." });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: 'Error al editar el plato', error: error.message });
+  }
+}
 
-      else res.status(400).json({messag:"No se pudo actualizar"})
-}
-catch(error){
-  res.status(500).json({ message: 'Error al editar el plato', error: error.message });
-}
-}
+
+
 
 
 exports.deleteDishes = async (req, res) => {
