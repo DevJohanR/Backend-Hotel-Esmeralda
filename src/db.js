@@ -4,19 +4,21 @@ const path = require("path");
 const DB_CONFIG = require("./db_config");
 
 const sslOptions = {
-  rejectUnauthorized: false,
+  rejectUnauthorized: false
+};
 
- };
+const isLocal = process.env.APP_ENV === 'LOCAL';
 
- const sequelize = new Sequelize(
+const sequelize = new Sequelize(
   `postgres://${DB_CONFIG.DB_USER}:${DB_CONFIG.DB_PASSWORD}@${DB_CONFIG.DB_HOST}:${DB_CONFIG.DB_PORT}/${DB_CONFIG.DB_NAME}`,
   {
-     logging: false,
-     dialectOptions: {
-       ssl: sslOptions
-     }
+    logging: false,
+    dialectOptions: {
+      ssl: isLocal ? false : sslOptions
+    }
   }
- );
+);
+
 console.log("Configuración de la base de datos:", DB_CONFIG);
 
 
