@@ -12,11 +12,15 @@ exports.createDish = async (req, res) => {
 exports.getDishes = async (req, res) => {
   try {
     const dishes = await dish.findAll();
+    if (dishes.length === 0) {
+      return res.status(200).json({ message: 'No hay platos disponibles.' });
+    }
     res.status(200).json(dishes);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener los platos', error: error.message });
   }
 }
+
 
 
 exports.editDishes = async (req, res) => {
@@ -38,19 +42,20 @@ exports.editDishes = async (req, res) => {
     return res.status(500).json({ message: 'Error al editar el plato', error: error.message });
   }
 }
-
-
-
-
-
 exports.deleteDishes = async (req, res) => {
- const {id} = req.params;
-try { 
-  const dish = await dish.findByPk(id)
-await dish.destroy()
-  res.status(200).json({message:"Se eliminó correctamente"})
-} catch (error) {
-  res.status(500).json({ message: 'Error al eliminar el plato', error: error.message });
-}
-
-}
+  const { id } = req.params;
+  try {
+     const dishToDelete = await dish.findByPk(id);
+     if (!dishToDelete) {
+       return res.status(404).json({ message: "Plato no encontrado." });
+     }
+     await dishToDelete.destroy();
+     // Después de eliminar el plato, obtener todos los platos restantes
+     const remainingDishes = await dish.findAll();
+     // Devolver los platos restantes en la respuesta
+     res.status(200).json({ message: "Plato eliminado correctamente.", dishes: remainingDishes });
+  } catch (error) {
+     res.status(500).json({ message: 'Error al eliminar el plato', error: error.message });
+  }
+ }
+ 
