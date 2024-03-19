@@ -1,19 +1,30 @@
-require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+const DB_CONFIG = require("./db_config");
 
-const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/hotel`,
-  { logging: false } //esto es para evitar que cada consulta se imprima en consola
-);
+const sslOptions = {
+  rejectUnauthorized: false,
 
-const basename = path.basename(__filename); // con esto podremos trabajar en base al directorio actual
+ };
+
+ const sequelize = new Sequelize(
+  `postgres://${DB_CONFIG.DB_USER}:${DB_CONFIG.DB_PASSWORD}@${DB_CONFIG.DB_HOST}:${DB_CONFIG.DB_PORT}/${DB_CONFIG.DB_NAME}`,
+  {
+     logging: false,
+     dialectOptions: {
+       ssl: sslOptions
+     }
+  }
+ );
+console.log("Configuración de la base de datos:", DB_CONFIG);
+
+
+const basename = path.basename(__filename);
 
 const modelDefiners = [];
 
-// este codigo organiza y carga los modelos
+// Este código organiza y carga los modelos
 fs.readdirSync(path.join(__dirname, "/models"))
   .filter(
     (file) =>
@@ -23,24 +34,16 @@ fs.readdirSync(path.join(__dirname, "/models"))
     modelDefiners.push(require(path.join(__dirname, "/models", file)));
   });
 
-//Incluyo la conexion de sequelize a cada modelo
+// Incluyo la conexión de Sequelize a cada modelo
 modelDefiners.forEach((model) => model(sequelize));
 
-// destructuring de los modelos
-const { guest_profile } = sequelize.models;
-const { reservations } = sequelize.models;
-const { room_details } = sequelize.models;
-const { rooms } = sequelize.models;
-const { room_types } = sequelize.models;
-const { users } = sequelize.models;
+// Destructuring de los modelos
+const { guest_profile, reservations, room_details, rooms, room_types, users } =
+  sequelize.models;
 
-// RELACIONES
-
+// Relaciones
 users.hasOne(guest_profile, { foreignKey: "user_id" });
 guest_profile.belongsTo(users, { foreignKey: "user_id" });
-
-reservations.belongsTo(guest_profile, { foreignKey: "guest_profile_id" });
-guest_profile.hasMany(reservations, { foreignKey: "guest_profile_id" });
 
 reservations.belongsTo(rooms, { foreignKey: "room_id" });
 rooms.hasMany(reservations, { foreignKey: "room_id" });
@@ -52,7 +55,7 @@ room_details.belongsTo(rooms, { foreignKey: "room_id" });
 rooms.hasOne(room_details, { foreignKey: "room_id" });
 
 room_types.hasMany(rooms, { foreignKey: "type_id" });
-rooms.belongsTo(rooms, { foreignKey: "type_id" });
+rooms.belongsTo(room_types, { foreignKey: "type_id" });
 
 module.exports = {
   ...sequelize.models,

@@ -37,7 +37,7 @@ catch(error){
 }
 
 
-exports.delteDishes = async (req, res) => {
+exports.deleteDishes = async (req, res) => {
  const {id} = req.params;
 try { 
   const dish = await dish.findByPk(id)
