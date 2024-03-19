@@ -16,10 +16,10 @@ router.get("/rooms", roomsController.listRooms);
 router.get("/rooms/:id", roomsController.getRoomDetails);
 router.delete("/rooms/:id", roomsController.deleteRoom);
 
-router.post("/roomsTypes", roomTypesController.createRoomType);
-router.get("/roomsTypes", roomTypesController.listRoomTypes);
-router.put("/roomsTypes/:id", roomTypesController.updateRoomTypeById);
-router.delete("/roomsTypes/:id", roomTypesController.deleteRoomTypeById);
+router.post("/roomTypes", roomTypesController.createRoomType);
+router.get("/roomTypes", roomTypesController.listRoomTypes);
+router.put("/roomTypes/:id", roomTypesController.updateRoomTypeById);
+router.delete("/roomTypes/:id", roomTypesController.deleteRoomTypeById);
 
 router.put("/rooms/:id", roomsController.updateRoom);
 
