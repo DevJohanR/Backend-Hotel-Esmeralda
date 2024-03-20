@@ -113,7 +113,7 @@ exports.updateRoom = async (req, res) => {
     //     }
     //   }
   };
-  
+
 //Eliminar Habitacion
 exports.deleteRoom = async (req, res) => {
     const transaction = await connect.transaction();
@@ -141,3 +141,37 @@ exports.deleteRoom = async (req, res) => {
   };
   
 
+exports.filterRooms = async (req, res) => {
+  try {
+    // Obtén los parámetros de consulta de la solicitud
+    const { type_rooms, status, max_capacity, is_active } = req.query;
+
+    // Crea un objeto de opciones para Sequelize `where` basado en los parámetros de consulta disponibles
+    let queryOptions = {
+      where: {}
+    };
+
+    // Agrega condiciones al objeto `where` si los parámetros de consulta están presentes
+    if (type_rooms) {
+      queryOptions.where.type_rooms = type_rooms;
+    }
+    if (status) {
+      queryOptions.where.status = status;
+    }
+    if (max_capacity) {
+      queryOptions.where.max_capacity = max_capacity;
+    }
+    if (is_active !== undefined) {
+      queryOptions.where.is_active = is_active === 'true'; // asumiendo que is_active es un booleano y viene como string en la query
+    }
+
+    // Utiliza el modelo para buscar en la base de datos basado en las opciones de consulta
+    const rooms = await Room.findAll(queryOptions);
+
+    // Responde con las habitaciones encontradas
+    res.status(200).json(rooms);
+  } catch (error) {
+    // Manejo de errores
+    res.status(500).send('Error retrieving rooms: ' + error.message);
+  }
+};

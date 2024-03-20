@@ -12,9 +12,9 @@ const reservationsController = require('../controllers/reservationsController');
   router.post('/rooms', roomsController.createRoom);
   router.get('/list', roomsController.listRooms);  
   router.get('/rooms/:id', roomsController.getRoomDetails);
-  router.delete('/rooms/:id', roomsController.deleteRoom);
-
   router.put('/rooms/:id', roomsController.updateRoom);
+  router.delete('/rooms/:id', roomsController.deleteRoom);
+  router.get('/filter', roomsController.filterRooms);
 
   // router.post('/reservations', reservationsController.createReservation);
 
