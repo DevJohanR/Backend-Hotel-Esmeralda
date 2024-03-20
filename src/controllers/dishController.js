@@ -2,13 +2,18 @@ const { dish } = require('../db');
 
 exports.createDish = async (req, res) => {
   try {
-    const newDish = await dish.create(req.body);
-    res.status(201).json(newDish);
+     const newDish = await dish.create(req.body);
+     const allDishes = await dish.findAll();
+     res.status(201).json({
+       newDish: newDish,
+       allDishes: allDishes,
+       message: "Plato creado correctamente y lista de todos los platos."
+     });
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear el plato', error: error.message });
+     res.status(500).json({ message: 'Error al crear el plato', error: error.message });
   }
-}
-
+ };
+ 
 exports.getDishes = async (req, res) => {
   try {
     const dishes = await dish.findAll();
@@ -48,6 +53,8 @@ exports.editDishes = async (req, res) => {
      return res.status(500).json({ message: 'Error al editar el plato', error: error.message });
   }
  }
+
+ 
  
 
 exports.deleteDishes = async (req, res) => {
