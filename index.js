@@ -2,9 +2,9 @@ require("dotenv").config();
 const server = require("./src/app");
 const initializers = require("./src/initializers");
 const { connect } = require("./src/db");
-const { PORT } = process.env || 3001;
+const { DB_PORT } = require("./src/db_config") || 4000;
 
-connect.sync({ alter: true }).then(() => {
+connect.sync({ force: false }).then(() => {
   console.log(`Database connected`);
 
   initializers
@@ -12,7 +12,7 @@ connect.sync({ alter: true }).then(() => {
     .then(() => console.log("Initial Values Created"))
     .catch(() => console.log("Initial values already exists!"));
 
-  server.listen(PORT, () => {
-    console.log(`Server in port ${PORT}`);
+  server.listen(DB_PORT, () => {
+    console.log(`Server in port ${DB_PORT}`);
   });
 });
