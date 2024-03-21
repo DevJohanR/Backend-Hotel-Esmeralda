@@ -22,7 +22,7 @@ const login = async (req, res, next) => {
         [Op.or]: [
           { email: usernameOrEmail },
           { username: usernameOrEmail },
-        ].filter(Boolean), // Filtrar elementos undefined o null
+        ].filter(Boolean),
       },
     });
 
@@ -50,7 +50,7 @@ const login = async (req, res, next) => {
 
     return res.status(200).json({
       message: "Inicio de sesión exitoso",
-      token,
+      token
     });
   } catch (error) {
     return next(error);

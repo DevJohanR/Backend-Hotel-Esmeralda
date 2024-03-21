@@ -1,7 +1,7 @@
 const { rooms, room_details, room_types } = require("../db");
 const { connect } = require("../db");
 
-// Crear
+
 exports.createRoomType = async (req, res) => {
   try {
     //Creating roomType
