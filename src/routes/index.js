@@ -2,7 +2,7 @@ const { Router } = require("express");
 const dishesRoutes = require("./dishes/dishes");
 const roomsRoutes = require("./rooms/rooms");
 const roomsTypesRoutes = require("./rooms/roomsTypes");
-const authRoutes = require('./users/register');
+const authRoutes = require('./users/users');
 
 const router = Router();
 
