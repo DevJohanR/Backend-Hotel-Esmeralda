@@ -39,5 +39,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: true,
     },
+    emailVerified: { // Johan estuvo aqui xD!
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   });
 };
