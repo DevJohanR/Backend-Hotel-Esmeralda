@@ -24,6 +24,7 @@ module.exports = (sequelize) => {
     status: {
       type: DataTypes.ENUM("available", "busy", "maintenance"),
       allowNull: false,
+      defaultValue: "available" 
     },
     price_per_night: {
       type: DataTypes.FLOAT,

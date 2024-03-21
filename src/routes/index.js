@@ -1,27 +1,19 @@
 const { Router } = require("express");
-const roomsController = require("../controllers/roomsController");
-const roomTypesController = require("../controllers/roomTypesController");
-const dishesRoutes = require("./dishes");
+const dishesRoutes = require("./dishes/dishes");
+const roomsRoutes = require("./rooms/rooms");
+const roomsTypesRoutes = require("./rooms/roomsTypes");
 
 const router = Router();
 
 router.get("/", (req, res) => {
-  res.status(200).json("Bienvenido");
+  res.status(200).json({ message: "Bienvenido" });
 });
 
-router.post("/rooms", roomsController.createRoom);
-router.get("/rooms", roomsController.listRooms);
-router.get("/rooms/:id", roomsController.getRoomDetails);
-router.delete("/rooms/:id", roomsController.deleteRoom);
+router.use("/api/dishes", dishesRoutes);
+router.use("/api/rooms", roomsRoutes);
+router.use("/api/roomstypes", roomsTypesRoutes);
 
-router.post("/roomTypes", roomTypesController.createRoomType);
-router.get("/roomTypes", roomTypesController.listRoomTypes);
-router.put("/roomTypes/:id", roomTypesController.updateRoomTypeById);
-router.delete("/roomTypes/:id", roomTypesController.deleteRoomTypeById);
 
-router.put("/rooms/:id", roomsController.updateRoom);
-
-router.use("/api", dishesRoutes);
 
 module.exports = router;
 
