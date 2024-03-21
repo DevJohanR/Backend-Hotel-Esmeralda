@@ -21,6 +21,11 @@ module.exports = (sequelize) => {
         isEmail: true,
       },
     },
+    emailVerified: { 
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -28,21 +33,13 @@ module.exports = (sequelize) => {
     role: {
       type: DataTypes.ENUM("customer", "admin", "employee"),
       allowNull: false,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false,
+      defaultValue: "customer",
     },
     is_active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
     },
-    emailVerified: { // Johan estuvo aqui xD!
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
+
   });
 };
