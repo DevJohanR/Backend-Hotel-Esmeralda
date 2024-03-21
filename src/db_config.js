@@ -3,6 +3,7 @@ dotenv.config();
 
 const APP_ENV = process.env.APP_ENV || "LOCAL";
 
+
 let DB_CONFIG = {};
 
 if (APP_ENV === "PRODUCTION") {

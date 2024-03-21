@@ -53,8 +53,8 @@ rooms.hasMany(reservations, { foreignKey: "room_id" });
 users.hasMany(reservations, { foreignKey: "user_id" });
 reservations.belongsTo(users, { foreignKey: "user_id" });
 
-room_details.belongsTo(rooms, { foreignKey: "room_id" });
 rooms.hasOne(room_details, { foreignKey: "room_id" });
+room_details.belongsTo(rooms, { foreignKey: "room_id" });
 
 room_types.hasMany(rooms, { foreignKey: "type_id" });
 rooms.belongsTo(room_types, { foreignKey: "type_id" });

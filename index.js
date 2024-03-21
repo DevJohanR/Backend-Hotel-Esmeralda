@@ -2,7 +2,7 @@ require("dotenv").config();
 const server = require("./src/app");
 const initializers = require("./src/initializers");
 const { connect } = require("./src/db");
-const { DB_PORT } = require("./src/db_config") || 4000;
+const { DB_PORT } = process.env;
 
 connect.sync({ force: false }).then(() => {
   console.log(`Database connected`);
