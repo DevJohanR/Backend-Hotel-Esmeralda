@@ -59,7 +59,6 @@ room_details.belongsTo(rooms, { foreignKey: "room_id" });
 room_types.hasMany(rooms, { foreignKey: "type_id" });
 rooms.belongsTo(room_types, { foreignKey: "type_id" });
 
-
 module.exports = {
   ...sequelize.models,
   connect: sequelize,
