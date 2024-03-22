@@ -11,7 +11,7 @@ const server = express();
 server.name = "API";
 
 //Midlewares
-app.use(cookieParser());
+server.use(cookieParser());
 server.use(morgan("dev"));
 server.use(cors());
 server.use(express.json());
