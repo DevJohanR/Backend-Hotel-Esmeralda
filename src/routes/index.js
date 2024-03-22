@@ -21,5 +21,3 @@ router.use('/api/reservations', reservationsRoutes);
 
 
 module.exports = router;
-
-
