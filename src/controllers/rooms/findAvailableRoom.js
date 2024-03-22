@@ -5,7 +5,6 @@ const findAvailableRoom = async (req, res, next) => {
  try {
     const { from, to, capacity } = req.body;
 
-    // Convertir las fechas a formato ISO 8601
     const fromDate = new Date(from).toISOString();
     const toDate = new Date(to).toISOString();
 
