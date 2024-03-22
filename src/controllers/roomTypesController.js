@@ -1,7 +1,6 @@
 const { rooms, room_details, room_types } = require("../db");
 const { connect } = require("../db");
 
-
 exports.createRoomType = async (req, res) => {
   try {
     //Creating roomType
@@ -26,10 +25,10 @@ exports.createRoomType = async (req, res) => {
 // Get roomTypes(No parameters=all, admitted parameters: name, id)
 exports.listRoomTypes = async (req, res) => {
   try {
-    const { name, id } = req.query;
+    const { id } = req.query;
     const whereClause = {};
-    if (name) whereClause.name = name;
-    if (id) whereClause.id = id;
+    if (id) whereClause.id = Number(id);
+    console.log(whereClause);
 
     const allRoomTypes = await room_types.findAll({ where: whereClause });
     return res.status(200).send(allRoomTypes);
