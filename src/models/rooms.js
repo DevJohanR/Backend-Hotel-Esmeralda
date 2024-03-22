@@ -2,7 +2,7 @@ const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  sequelize.define("rooms", {
+  return sequelize.define("rooms", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -13,14 +13,18 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    type_rooms: {
-      type: DataTypes.TEXT,
+    type_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-
+    photo_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM("available", "busy", "maintenance"),
       allowNull: false,
+      defaultValue: "available" 
     },
     price_per_night: {
       type: DataTypes.FLOAT,

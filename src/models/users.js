@@ -2,7 +2,7 @@ const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  sequelize.define("users", {
+  return sequelize.define("users", {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -21,6 +22,11 @@ module.exports = (sequelize) => {
         isEmail: true,
       },
     },
+    emailVerified: { 
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -28,16 +34,13 @@ module.exports = (sequelize) => {
     role: {
       type: DataTypes.ENUM("customer", "admin", "employee"),
       allowNull: false,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false,
+      defaultValue: "customer",
     },
     is_active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
     },
+
   });
 };

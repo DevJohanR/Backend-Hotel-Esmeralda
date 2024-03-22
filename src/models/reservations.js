@@ -2,7 +2,7 @@ const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  sequelize.define("reservations", {
+  return sequelize.define("reservations", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,

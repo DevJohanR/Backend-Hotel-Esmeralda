@@ -2,10 +2,14 @@ const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  sequelize.define("room_details", {
+  return sequelize.define("room_details", {
     room_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    photos: {
+      type: DataTypes.ARRAY(DataTypes.TEXT), 
+      allowNull: true,
     },
     single_bed: {
       type: DataTypes.INTEGER,
