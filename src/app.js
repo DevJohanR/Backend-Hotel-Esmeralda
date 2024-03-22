@@ -8,6 +8,11 @@ const cors = require("cors");
 // Create server
 const server = express();
 
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Promise Rejection:', err);
+  // Aquí puedes agregar código para manejar el error, como enviar un registro o notificar al usuario
+});
+
 server.name = "API";
 
 //Midlewares
