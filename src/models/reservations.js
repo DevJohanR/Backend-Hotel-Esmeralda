@@ -16,10 +16,6 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    // guest_profile_id: {
-    //   type: DataTypes.UUID,
-    //   allowNull: false,
-    // },
     check_in_date: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -28,13 +24,22 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    status: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    check_in_time: {
+      type: DataTypes.DATE, 
+      allowNull: true,
     },
+    check_out_time: {
+      type: DataTypes.DATE, 
+      allowNull: true,
+    },
+    status: {
+      type: DataTypes.ENUM('pending', 'confirmed', 'finalized', 'cancelled'),
+      allowNull: false,
+      defaultValue: 'pending',
+   },
     total_price: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
     room_id: {
       type: DataTypes.INTEGER,
