@@ -1,10 +1,10 @@
-const { rooms, room_details } =  require('../../db');
+const { rooms, room_details, connect } = require('../../db');
 
 const deleteRoom = async (req, res) => {
  try {
     const { id } = req.params;
 
-    await sequelize.transaction(async (transaction) => {
+    await connect.transaction(async (transaction) => {
       const room = await rooms.findByPk(id, { transaction });
       if (!room) {
         throw new Error("Room not found");
