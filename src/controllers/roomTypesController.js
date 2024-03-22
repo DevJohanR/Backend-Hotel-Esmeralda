@@ -69,7 +69,7 @@ exports.deleteRoomTypeById = async (req, res) => {
   try {
     const { id } = req.params;
     const { verification } = req.body;
-    if (verification !== "admin")
+    // if (verification !== "admin")
       return res
         .status(400)
         .send("Please send the admin verification to perform this action.");

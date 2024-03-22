@@ -33,6 +33,7 @@ const createRoom = async (req, res) => {
             tv: req.body.tv,
             minibar: req.body.minibar,
             phone: req.body.phone,
+            photos: req.body.photos,
         });
 
         res.status(201).json({
