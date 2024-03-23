@@ -33,8 +33,8 @@ const createReservation = async (req, res, next) => {
       const totalPrice = pricePerNight * nights;
   
       // Establecer la hora de check-in a las 3 PM y la hora de check-out a las 12 PM
-      checkInDate.setHours(10, 0, 0, 0); // 3 PM
-      checkOutDate.setHours(7, 0, 0, 0); // 12 PM
+      checkInDate.setHours(15, 0, 0, 0); // 3 PM
+      checkOutDate.setHours(12, 0, 0, 0); // 12 PM
   
       // Verificar si el usuario ya tiene una reserva pendiente para las fechas solicitadas
       const existingReservation = await reservations.findOne({
