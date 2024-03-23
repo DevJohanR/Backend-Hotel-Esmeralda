@@ -12,7 +12,7 @@ const findAvailableRoom = async (req, res, next) => {
     // y que tengan una capacidad igual o mayor a la requerida
     const availableRooms = await rooms.findAll({
       where: {
-        status: 'available',
+        // status: 'available' || 'busy',
         max_capacity: {
           [Op.gte]: capacity
         },

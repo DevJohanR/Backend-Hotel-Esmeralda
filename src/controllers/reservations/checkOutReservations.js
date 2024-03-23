@@ -29,12 +29,13 @@ const checkOutReservations = async (req, res, next) => {
     // Buscar la habitación por ID
     const room = await rooms.findByPk(roomId);
 
-    if (room) {
-      // Cambiar el estado de la habitación a "maintenance"
-      await room.update({
-        status: 'maintenance'
-      });
-    }
+    if (room && room.status === 'maintenance') {
+      setTimeout(async () => {
+          await room.update({
+              status: 'available'
+          });
+      }, 7000); 
+  }
 
     res.status(200).json({ message: 'Check-out realizado y reserva finalizada', reservation });
  } catch (error) {
