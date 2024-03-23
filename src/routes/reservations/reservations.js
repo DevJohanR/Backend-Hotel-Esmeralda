@@ -8,7 +8,7 @@ const { authenticateToken } = require("../../helpers/authenticateToken");
 
 const router = Router();
 
-router.post("/",authenticateToken, createReservation);
+router.post("/", createReservation);
 router.post("/checkin", checkinReservations);
 router.post("/checkout", checkOutReservations);
 
