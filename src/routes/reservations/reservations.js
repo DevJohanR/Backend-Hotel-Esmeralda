@@ -3,11 +3,12 @@ const { createReservation } = require("../../controllers/reservations/createRese
 const { checkOutReservations } = require("../../controllers/reservations/checkOutReservations");
 
 const { Router } = require("express");
+const { authenticateToken } = require("../../helpers/authenticateToken");
 
 
 const router = Router();
 
-router.post("/", createReservation);
+router.post("/",authenticateToken, createReservation);
 router.post("/checkin", checkinReservations);
 router.post("/checkout", checkOutReservations);
 

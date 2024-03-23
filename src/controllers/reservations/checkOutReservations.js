@@ -2,7 +2,7 @@ const { reservations, rooms } = require('../../db');
 
 const checkOutReservations = async (req, res, next) => {
  try {
-    const { reservation_number } = req.body.reservation;
+    const { reservation_number } = req.body;
 
     // Buscar la reserva por número de reserva
     const reservation = await reservations.findOne({
