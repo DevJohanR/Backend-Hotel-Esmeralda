@@ -38,5 +38,5 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.NOW,
       allowNull: false,
     },
-  });
+  },{paranoid:true});
 };
