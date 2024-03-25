@@ -1,22 +1,32 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+
 
 const authenticateToken = (req, res, next) => {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
-    return res.status(401).json({ message: 'No tienes permisos para este tipo de consultas' });
+  if (!authHeader) {
+      console.error('No se proporcionó el token');
+      return res.sendStatus(401);
+  }
+
+  const [bearer, token] = authHeader.split(' ');
+
+  if (!token || bearer.toLowerCase() !== 'bearer') {
+      console.error('Formato de token inválido');
+      return res.sendStatus(401);
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
-    if (error) {
-      return res.status(401).json({ message: 'Token inválido' });
-    }
+      if (error) {
+          console.error('Token inválido:', error);
+          return res.sendStatus(403);
+      }
 
-    req.user = user;
-    next();
+      req.user = user;
+      next();
   });
 };
 
 module.exports = {
-    authenticateToken
-    };
+ authenticateToken,
+};
