@@ -10,8 +10,7 @@ const register = async (req, res, next) => {
       where: {
         [Op.or]: [{ email }, { username }]
       }
-    });
-
+    }); 
     if (userExists) {
       return res.status(409).json({ message: 'El correo electrónico o el nombre de usuario ya están en uso.' });
     }

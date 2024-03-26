@@ -68,7 +68,7 @@ exports.deleteRoomTypeById = async (req, res) => {
   try {
     const { id } = req.params;
     const { verification } = req.body;
-    // if (verification !== "admin")
+    if (verification !== "admin")
       return res
         .status(400)
         .send("Please send the admin verification to perform this action.");
@@ -77,8 +77,6 @@ exports.deleteRoomTypeById = async (req, res) => {
       await transaction.rollback();
       return res.status(404).send("Room Type not found");
     }
-
-    // Delete room type
     await room_types.destroy({ where: { id: id } }, { transaction });
 
     await transaction.commit();

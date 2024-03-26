@@ -10,7 +10,6 @@ const createRoom = async (req, res) => {
         if (!roomType) {
             return res.status(400).json({ message: 'Tipo de habitación no encontrado' });
         }
-
         // Luego, crea la habitación con el tipo de habitación asociado
         const newRoom = await rooms.create({
             room_number: req.body.room_number,
@@ -47,3 +46,27 @@ const createRoom = async (req, res) => {
 };
 
 module.exports = { createRoom };
+
+// JSON de ejemplo para crear una habitación
+// {
+//     "room_number": 103,
+//     "type_rooms": "Standard King",
+//     "status": "available",
+//     "price_per_night": 100,
+//     "description": "This room type is perfect for couples seeking a spacious and comfortable stay. It includes all the essential facilities, ensuring a comfortable and convenient stay for guests.",
+//     "max_capacity": 2,
+//     "is_active": true,
+//     "photo_url": "https://media-public.canva.com/MADQ43iq6nE/1/thumbnail_large-1.jpg",
+//     "single_bed": 2,
+//     "double_bed": 0,
+//     "photos": [
+//       "https://www.atualrededor.com/wp-content/uploads/2020/08/Hotel-768x512.jpg",
+//       "https://media-public.canva.com/Qs724/MAElQNQs724/1/tl.jpg"
+//     ],
+//     "air_conditioning": true,
+//     "jacuzzi": false,
+//     "internet_connection": true,
+//     "tv": true,
+//     "minibar": false,
+//     "phone": true
+//   }
