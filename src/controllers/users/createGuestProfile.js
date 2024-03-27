@@ -4,8 +4,8 @@ const createGuestProfile = async (req, res) => {
 
     try {
 
-        const { full_name, phone_number, address, photo_url, gender } = req.body
-        if (full_name && phone_number && address && photo_url && gender) {
+        const { full_name, phone_number, address, photo_url, gender,document,country } = req.body
+        if (full_name && phone_number && address && photo_url && gender && document && country) {
             const newGuestProfile = await guest_profile.create(req.body)
             res.status(200).json({ message: "Su perfil se a creado correctamente", newGuestProfile: newGuestProfile })
         }
