@@ -5,6 +5,7 @@ const { getAllUsers } = require('../../controllers/users/getAllUsers');
 const { login } = require('../../controllers/users/login');
 const { authenticateToken } = require('../../helpers/authenticateToken');
 const { userInfo } = require('../../controllers/users/userInfo');
+const { updateProfile } = require('../../controllers/users/updateProfile');
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.get('/checkUser', checkUserExists);
 router.get('/allUsers', authenticateToken, getAllUsers);
 router.post('/login', login);
 router.get('/userinfo', authenticateToken, userInfo); 
+router.post('/profile/:userId', updateProfile);
 
 module.exports = router;
