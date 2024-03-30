@@ -1,3 +1,4 @@
+//routes/users/index.js
 const { Router } = require("express");
 const dishesRoutes = require("./dishes/dishes");
 const roomsRoutes = require("./rooms/rooms");
