@@ -8,7 +8,6 @@ const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
-    // Verificar si el email o username ya están registrados
     const userExists = await users.findOne({
       where: {
         [Op.or]: [{ email }, { username }]
@@ -31,7 +30,7 @@ const register = async (req, res, next) => {
 
     const verificationToken = generateEmailVerificationToken(email);
 
-    await sendConfirmationEmail({ username, email, confirmationToken: verificationToken });
+    await sendConfirmationEmail({ username, email,verificationCode : verificationToken});
     console.log('Correo de confirmación enviado:', email); 
 
     return res.status(201).json({

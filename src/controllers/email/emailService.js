@@ -35,8 +35,8 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendConfirmationEmail = async ({ username, email, confirmationToken }) => {
-  const confirmationUrl = `http://localhost:4000/auth/confirm/${confirmationToken}`;
+const sendConfirmationEmail = async ({ username, email, verificationCode }) => {
+  const confirmationUrl = `http://localhost:3000/email-confirmation/${verificationCode}`;
   const message = {
     to: email,
     from: process.env.EMAIL_FROM,
@@ -485,7 +485,7 @@ const sendConfirmationEmail = async ({ username, email, confirmationToken }) => 
         </td>
       </tr>
     </tbody>
-  </table><div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#403101; font-size:12px; line-height:20px; padding:20px 16px 20px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5"><div class="Unsubscribe--addressLine"><p class="Unsubscribe--senderName" style="font-family:times new roman,times,serif; font-size:12px; line-height:20px;">Hotel Esmeralda Resort & SPA</p><p style="font-family:times new roman,times,serif; font-size:12px; line-height:20px;"><span class="Unsubscribe--senderAddress">Buenos Aires, Argentina</span>, <span class="Unsubscribe--senderCity"></span>, <span class="Unsubscribe--senderState"></span> <span class="Unsubscribe--senderZip">B1657</span></p></div><p style="font-family:times new roman,times,serif; font-size:12px; line-height:20px;"><a class="Unsubscribe--unsubscribeLink" href="" target="_blank" style="color:#C29A1F;"></a></p></div><table border="0" cellpadding="0" cellspacing="0" class="module" data-role="module-button" data-type="button" role="module" style="table-layout:fixed;" width="100%" data-muid="51e9038b-1d42-4d4b-b954-d2f2ade99683">
+  </table><div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#403101; font-size:12px; line-height:20px; padding:20px 16px 20px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5"><div class="Unsubscribe--addressLine"><p class="Unsubscribe--senderName" style="font-family:times new roman,times,serif; font-size:12px; line-height:20px;">Hotel Esmeralda Resort & SPA</p><p style="font-family:times new roman,times,serif; font-size:12px; line-height:20px;"><span class="Unsubscribe--senderAddress">Buenos Aires, Argentina</span>  <span class="Unsubscribe--senderCity"></span>, <span class="Unsubscribe--senderState"></span> <span class="Unsubscribe--senderZip">B1657</span></p></div><p style="font-family:times new roman,times,serif; font-size:12px; line-height:20px;"><a class="Unsubscribe--unsubscribeLink" href="" target="_blank" style="color:#C29A1F;"></a></p></div><table border="0" cellpadding="0" cellspacing="0" class="module" data-role="module-button" data-type="button" role="module" style="table-layout:fixed;" width="100%" data-muid="51e9038b-1d42-4d4b-b954-d2f2ade99683">
       <tbody>
         <tr>
           <td align="center" bgcolor="" class="outer-td" style="padding:20px 0px 20px 0px;">

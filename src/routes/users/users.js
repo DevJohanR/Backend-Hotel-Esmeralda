@@ -18,7 +18,6 @@ router.get('/allUsers', authenticateToken, getAllUsers);
 router.post('/login', login);
 router.get('/userinfo', authenticateToken, userInfo); 
 router.post('/profile/:userId', updateProfile);
-router.get('/confirm/:token', confirmEmail);
-  
+router.get('/confirm/:verificationCode', confirmEmail);  
 
 module.exports = router;
