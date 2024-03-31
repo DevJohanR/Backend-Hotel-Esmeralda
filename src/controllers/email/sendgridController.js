@@ -6,7 +6,7 @@ const confirmEmail = async (req, res) => {
     const { token } = req.params;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await users.findOne({ where: { id: decoded.id } });
+    const user = await users.findOne({ where: { email: decoded.email } });
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado.' });
     }
