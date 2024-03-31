@@ -1,18 +1,32 @@
-//helpers/jwt.js
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const generateToken = (userId, username, email) => {
- try {
+// Función para generar un token JWT de un solo uso
+const generateEmailVerificationToken = (email) => {
+  try {
+    return jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "24h" });
+  } catch (error) {
+    console.error(
+      "Error al generar el token de verificación de correo electrónico:",
+      error
+    );
+    throw error;
+  }
+};
+
+// Función para generar un token JWT para autenticación
+const generateAuthToken = (userId, username, email) => {
+  try {
     return jwt.sign({ id: userId, username, email }, process.env.JWT_SECRET, {
-      expiresIn: '1h'
+      expiresIn: "1h",
     });
- } catch (error) {
-    console.error('Error al generar el token:', error);
-    throw error; // O maneja el error de la manera que prefieras
- }
+  } catch (error) {
+    console.error("Error al generar el token:", error);
+    throw error;
+  }
 };
 
 module.exports = {
- generateToken
-};
-
+   generateEmailVerificationToken,
+   generateAuthToken
+ };
+ 
