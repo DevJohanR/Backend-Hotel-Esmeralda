@@ -11,27 +11,35 @@ module.exports = (sequelize) => {
     },
     user_id: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
     },
     full_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     phone_number: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    document : {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     photo_url: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     gender: {
       type: DataTypes.ENUM("male", "female", "other"),
-      allowNull: false,
+      allowNull: true,
     },
     created_at: {
       type: DataTypes.DATE,

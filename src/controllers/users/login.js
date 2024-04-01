@@ -1,7 +1,7 @@
   const bcrypt = require("bcrypt");
   const { Op } = require("sequelize");
   const { users } = require("../../db");
-  const { generateToken } = require("../../helpers/jwt");
+  const { generateAuthToken } = require("../../helpers/jwt");
 
   const login = async (req, res) => {
     const { usernameOrEmail, password } = req.body;
@@ -36,7 +36,7 @@
         });
       }
 
-      const token = generateToken(user.id, user.username, user.email);
+      const token = generateAuthToken(user.id, user.username, user.email);
 
       res.cookie("token", token, { httpOnly: true });
       res.json({ message: 'Inicio de sesión exitoso', token });
