@@ -1,4 +1,4 @@
-const { rooms, room_details, room_types } = require('../../db');
+const { rooms, room_details, room_types } = require("../../db");
 
 const getRoomDetails = async (req, res) => {
   try {
@@ -6,7 +6,7 @@ const getRoomDetails = async (req, res) => {
     const room = await rooms.findByPk(id, {
       include: [
         { model: room_details, as: "room_detail" },
-        { model: room_types, as: "room_type" }
+        { model: room_types, as: "room_type" },
       ],
     });
     if (!room) {

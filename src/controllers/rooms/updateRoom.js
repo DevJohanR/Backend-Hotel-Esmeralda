@@ -1,4 +1,4 @@
-const { rooms, room_details, connect } = require('../../db');
+const { rooms, room_details, room_types, connect } = require("../../db");
 
 const updateRoom = async (req, res) => {
   const transaction = await connect.transaction();
@@ -19,10 +19,22 @@ const updateRoom = async (req, res) => {
       });
     }
     await transaction.commit();
-    res.status(200).send("Room updated successfully");
+    const roomEdited = await rooms.findAll({
+      where: { id },
+      include: [
+        { model: room_types, as: "room_type" },
+        { model: room_details, as: "room_detail" },
+      ],
+    });
+
+    return res.status(200).send(roomEdited);
   } catch (error) {
+    console.log(error);
+
     await transaction.rollback();
-    res.status(500).send("Error updating room: " + error.message);
+    console.log(error.message);
+
+    return res.status(500).send("Error updating room: " + error.message);
   }
 };
 
