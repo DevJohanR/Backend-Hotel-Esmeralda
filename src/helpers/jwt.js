@@ -18,9 +18,9 @@ const generateEmailVerificationToken = (email, username) => {
 
 
 // Función para generar un token JWT para autenticación
-const generateAuthToken = (userId, username, email) => {
+const generateAuthToken = (userId, username, email,role) => {
   try {
-    return jwt.sign({ id: userId, username, email }, process.env.JWT_SECRET, {
+    return jwt.sign({ id: userId, username, email ,role}, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
   } catch (error) {

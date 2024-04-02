@@ -36,7 +36,7 @@
         });
       }
 
-      const token = generateAuthToken(user.id, user.username, user.email);
+      const token = generateAuthToken(user.id, user.username, user.email,user.role);
 
       res.cookie("token", token, { httpOnly: true });
       res.json({ message: 'Inicio de sesión exitoso', token });
