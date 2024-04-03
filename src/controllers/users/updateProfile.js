@@ -2,6 +2,7 @@ const { users, guest_profile} = require('../../db');
 
 const updateProfile = async (req, res) => {
   try {
+    console.log('Datos recibidos:', req.params, req.body);
     const { userId } = req.params; 
     const { fullName, phoneNumber, document, country, address, photoUrl, gender } = req.body; 
 

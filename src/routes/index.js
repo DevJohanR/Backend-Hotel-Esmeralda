@@ -18,7 +18,7 @@ router.use("/api/dishes", dishesRoutes);
 router.use("/api/rooms", roomsRoutes);
 router.use("/api/roomstypes", roomsTypesRoutes);
 router.use('/auth', authRoutes);
-router.use('/api/reservations',authenticateToken, reservationsRoutes);
+router.use('/api/reservations', reservationsRoutes);
 
 
 
