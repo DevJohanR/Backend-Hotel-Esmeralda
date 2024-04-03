@@ -14,10 +14,10 @@ const router = Router();
 
 router.post('/register', register);
 router.get('/checkUser', checkUserExists);
-router.get('/allUsers', getAllUsers);
+router.get('/allUsers', authenticateToken, getAllUsers);
 router.post('/login', login);
-router.get('/userinfo', userInfo); 
-router.post('/profile/:userId', updateProfile);
+router.get('/userinfo', authenticateToken, userInfo); 
+router.post('/profile/:userId',authenticateToken, updateProfile);
 router.get('/confirm/:verificationCode', confirmEmail);  
 
 module.exports = router;
