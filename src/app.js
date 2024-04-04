@@ -1,10 +1,12 @@
-//app.js
+//src/app.js
 // Initialize express server
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require('cookie-parser');
 const routes = require("./routes/index");
 const cors = require("cors");
+const paymentRoutes = require('./routes/payment.routes');
+
 
 // Create server
 const server = express();
@@ -21,6 +23,10 @@ server.use(cookieParser());
 server.use(morgan("dev"));
 server.use(cors());
 server.use(express.json());
+
+//Payment
+server.use(paymentRoutes);
+
 
 //Routes
 server.use("/", routes);

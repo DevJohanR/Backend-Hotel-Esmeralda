@@ -23,4 +23,7 @@ if (APP_ENV === "PRODUCTION") {
     DB_PORT: process.env.LOCAL_PORT,
   };
 }
-module.exports = DB_CONFIG;
+module.exports = {
+    STRIPE_PRIVATE_KEY: process.env.STRIPE_PRIVATE_KEY,
+    DB_CONFIG,
+} 
