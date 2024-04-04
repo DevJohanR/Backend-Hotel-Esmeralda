@@ -11,6 +11,7 @@ const isLocal = process.env.APP_ENV === 'LOCAL';
 
 const sequelize = new Sequelize(
   `postgres://${DB_CONFIG.DB_USER}:${DB_CONFIG.DB_PASSWORD}@${DB_CONFIG.DB_HOST}:${DB_CONFIG.DB_PORT}/${DB_CONFIG.DB_NAME}`,
+  
   {
     logging: false,
     dialectOptions: {
