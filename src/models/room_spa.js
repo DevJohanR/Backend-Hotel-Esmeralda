@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  return sequelize.define("spa_Rooms", {
+  return sequelize.define("room_spa", {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -21,13 +21,21 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    service_type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     max_capacity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1,
-      },
-    room_price: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
+    price: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     room_status: {
