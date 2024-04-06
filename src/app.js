@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const cookieParser = require('cookie-parser');
 const routes = require("./routes/index");
 const cors = require("cors");
-const paymentRoutes = require('./routes/payment.routes');
+
 
 
 // Create server
@@ -24,8 +24,7 @@ server.use(morgan("dev"));
 server.use(cors());
 server.use(express.json());
 
-//Payment
-server.use(paymentRoutes);
+
 
 
 //Routes

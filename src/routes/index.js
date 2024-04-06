@@ -6,7 +6,7 @@ const roomsTypesRoutes = require("./rooms/roomsTypes");
 const authRoutes = require('./users/users');
 const reservationsRoutes = require('./reservations/reservations');
 const { authenticateToken } = require("../helpers/authenticateToken");
-
+const paymentRoutes = require('./payment.routes');
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.use("/api/rooms", roomsRoutes);
 router.use("/api/roomstypes", roomsTypesRoutes);
 router.use('/auth', authRoutes);
 router.use('/api/reservations', reservationsRoutes);
-
+router.use('/api/payments', paymentRoutes);
 
 
 module.exports = router;
