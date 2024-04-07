@@ -35,5 +35,13 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: "sedan",
     },
+    price_per_day: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   });
 };
