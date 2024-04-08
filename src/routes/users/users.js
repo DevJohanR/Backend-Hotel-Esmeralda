@@ -1,4 +1,3 @@
-//routes/users/users.js
 const { Router } = require('express');
 const { checkUserExists } = require('../../controllers/users/checkUser');
 const { register } = require('../../controllers/users/register');
