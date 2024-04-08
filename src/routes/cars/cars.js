@@ -5,7 +5,11 @@ const { deleteCar } = require("../../controllers/cars/deleteCar");
 const { editCars } = require("../../controllers/cars/editCar");
 const {
   createCarReservation,
-} = require("../../controllers/cars/reservationCar");
+} = require("../../controllers/cars/reservation_car");
+const { editCarReservation } = require("../../controllers/cars/edit_reserv");
+const {
+  deleteCarReservation,
+} = require("../../controllers/cars/delete_reserv");
 
 const router = Router();
 
@@ -14,4 +18,6 @@ router.get("/", listCar);
 router.patch("/:id", editCars);
 router.delete("/:id", deleteCar);
 router.post("/reservation", createCarReservation);
+router.patch("/edit_reserv/:id", editCarReservation);
+router.delete("/delete_reserv/:id", deleteCarReservation);
 module.exports = router;

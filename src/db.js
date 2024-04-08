@@ -53,6 +53,7 @@ const {
   car_details,
   room_spa,
   user_reservations,
+  restaurant_reserv,
 } = sequelize.models;
 
 // Relaciones
@@ -80,19 +81,25 @@ spa_reservations.belongsTo(room_spa, { foreignKey: "spa_room_id" });
 room_spa.hasMany(spa_reservations, { foreignKey: "spa_room_id" });
 
 user_reservations.belongsTo(reservations, { foreignKey: "reservation_id" });
-user_reservations.belongsTo(spa_reservations, {foreignKey: "spa_reservation_id"});
+user_reservations.belongsTo(spa_reservations, {
+  foreignKey: "spa_reservation_id",
+});
 
 reservations.hasOne(user_reservations, { foreignKey: "reservation_id" });
 spa_reservations.hasOne(reservations, { foreignKey: "spa_reservation_id" });
 
 //RELACION RESERVA CARS
 
-users.hasMany(car_reservations, {foreignKey: "user_id"})
-car_reservations.belongsTo(users, {foreignKey: "user_id"})
+users.hasMany(car_reservations, { foreignKey: "user_id" });
+car_reservations.belongsTo(users, { foreignKey: "user_id" });
 
-car_reservations.belongsTo(car_details, {foreignKey: "car_id"})
-car_details.hasMany(car_reservations, {foreignKey: "car_id"})
+car_reservations.belongsTo(car_details, { foreignKey: "car_id" });
+car_details.hasMany(car_reservations, { foreignKey: "car_id" });
 
+// RESERVA RESTAURANT
+
+users.hasMany(restaurant_reserv, { foreignKey: "user_id" });
+restaurant_reserv.belongsTo(users, { foreignKey: "user_id" });
 
 module.exports = {
   ...sequelize.models,
