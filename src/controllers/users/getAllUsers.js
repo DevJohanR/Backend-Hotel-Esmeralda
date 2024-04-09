@@ -1,4 +1,4 @@
-const { users } = require('../../db');
+const { users } = require("../../db");
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -7,9 +7,11 @@ const getAllUsers = async (req, res, next) => {
 
     // Verificar si se encontraron usuarios
     if (allUsers.length > 0) {
-      return res.status(200).json({ message: 'Usuarios encontrados:', users: allUsers });
+      return res
+        .status(200)
+        .json({ message: "Usuarios encontrados:", users: allUsers });
     } else {
-      return res.status(404).json({ message: 'No se encontraron usuarios.' });
+      return res.status(404).json({ message: "No se encontraron usuarios." });
     }
   } catch (error) {
     return next(error);
@@ -17,5 +19,5 @@ const getAllUsers = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllUsers
+  getAllUsers,
 };
