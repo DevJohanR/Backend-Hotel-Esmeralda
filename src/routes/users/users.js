@@ -8,8 +8,9 @@ const { userInfo } = require("../../controllers/users/userInfo");
 const { updateProfile } = require("../../controllers/users/updateProfile");
 const { confirmEmail } = require("../../controllers/email/sendgridController");
 const createGuestProfile = require("../../controllers/users/createGuestProfile");
+const updateGuestProfilePhoto = require("../../controllers/users/updatePhoto");
 
-const upload = require("../../controllers/uploads3/multerConfig");
+//const upload = require("../../controllers/uploads3/multerConfig");
 
 const router = Router();
 
@@ -20,6 +21,9 @@ router.post("/login", login);
 router.get("/userinfo", authenticateToken, userInfo);
 router.post("/profile/:userId", updateProfile);
 router.get("/confirm/:verificationCode", confirmEmail);
-router.post("/createguestprofile", upload.single("photo"), createGuestProfile);
+router.post("/createguestprofile", createGuestProfile);
+
+//  ruta para actualizar la foto del perfil de invitado
+router.put("/guest-profile/:id/photo", updateGuestProfilePhoto);
 
 module.exports = router;

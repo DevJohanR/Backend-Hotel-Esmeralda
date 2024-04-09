@@ -21,20 +21,18 @@ const createGuestProfile = async (req, res) => {
         !address ||
         !gender ||
         !document ||
-        !country ||
-        !req.file
+        !country
       ) {
         return res
           .status(400)
-          .json({ message: "Falta información en los campos" });
+          .json({ message: "Missing information in the fields" });
       }
 
       const newGuestProfile = await guest_profile.create({
         ...req.body,
-        photo_url: req.file.location,
       });
       res.status(200).json({
-        message: "Su perfil se a creado correctamente",
+        message: "Your profile was created successfully",
         newGuestProfile: newGuestProfile,
       });
     });
