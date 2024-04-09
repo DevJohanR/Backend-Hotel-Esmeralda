@@ -21,7 +21,7 @@ const updateProfile = async (req, res) => {
         country: country,
         address: address,
         photo_url: photo_url,
-        gender: gender,
+        gender: gender, 
         birth: birth,
       });
     } else {
