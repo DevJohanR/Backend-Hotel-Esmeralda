@@ -105,8 +105,12 @@ restaurant_reserv.belongsTo(users, { foreignKey: "user_id" });
 
 user_reservations.belongsTo(car_reservations, {
   foreignKey: "carReservation_Id",
+  targetKey: "reservation_number", // Especifica que la clave foránea se relaciona con reservation_number
 });
-car_reservations.hasOne(user_reservations, { foreignKey: "carReservation_Id" });
+car_reservations.hasOne(user_reservations, {
+  foreignKey: "carReservation_Id",
+  sourceKey: "reservation_number", // Especifica que la clave principal se relaciona con reservation_number
+});
 
 user_reservations.belongsTo(restaurant_reserv, {
   foreignKey: "restaurantReservation_Id",

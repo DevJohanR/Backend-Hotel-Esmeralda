@@ -16,11 +16,11 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     spaReservation_Id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       //allowNull: false,
     },
     carReservation_Id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       //allowNull: false,
     },
   });
