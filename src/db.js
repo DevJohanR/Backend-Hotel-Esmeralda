@@ -101,6 +101,20 @@ car_details.hasMany(car_reservations, { foreignKey: "car_id" });
 users.hasMany(restaurant_reserv, { foreignKey: "user_id" });
 restaurant_reserv.belongsTo(users, { foreignKey: "user_id" });
 
+// RESERVAS TOTALES
+
+user_reservations.belongsTo(car_reservations, {
+  foreignKey: "carReservation_Id",
+});
+car_reservations.hasOne(user_reservations, { foreignKey: "carReservation_Id" });
+
+user_reservations.belongsTo(restaurant_reserv, {
+  foreignKey: "restaurantReservation_Id",
+});
+restaurant_reserv.hasOne(user_reservations, {
+  foreignKey: "restaurantReservation_Id",
+});
+
 module.exports = {
   ...sequelize.models,
   connect: sequelize,

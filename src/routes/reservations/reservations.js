@@ -18,8 +18,8 @@ const {
   createRestaurantReservation,
 } = require("../../controllers/restaurant_reserv/create");
 const {
-  deleteRestaurantReservation,
-} = require("../../controllers/restaurant_reserv/delete_reserv");
+  cancelRestaurantReservation,
+} = require("../../controllers/restaurant_reserv/cancel_reserv");
 const {
   editRestaurantReservation,
 } = require("../../controllers/restaurant_reserv/edit_reserv");
@@ -31,7 +31,7 @@ router.post("/checkin", checkinReservations);
 router.post("/checkout", checkOutReservations);
 router.get("/userReservations/:userId", getUserReservations);
 router.post("/restaurant", createRestaurantReservation);
-router.delete("/delete_reserv/:id", deleteRestaurantReservation);
+router.patch("/cancel_reserv/:id", cancelRestaurantReservation);
 router.patch("/edit_reserv/:id", editRestaurantReservation);
 
 module.exports = router;
