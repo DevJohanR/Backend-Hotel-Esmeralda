@@ -1,4 +1,3 @@
-//routes/users/users.js
 const { Router } = require('express');
 const { checkUserExists } = require('../../controllers/users/checkUser');
 const { register } = require('../../controllers/users/register');
@@ -14,7 +13,7 @@ const router = Router();
 
 router.post('/register', register);
 router.get('/checkUser', checkUserExists);
-router.get('/allUsers', authenticateToken, getAllUsers);
+router.get('/allUsers', getAllUsers);
 router.post('/login', login);
 router.get('/userinfo', authenticateToken, userInfo); 
 router.post('/profile/:userId',authenticateToken, updateProfile);

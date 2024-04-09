@@ -54,7 +54,6 @@ const createRoom = async (req, res) => {
     console.log(newRoomDetails);
 
     await transaction.commit();
-    const { id } = req.params;
     const room = await rooms.findByPk(newRoom.id, {
       include: [
         { model: room_details, as: "room_detail" },
