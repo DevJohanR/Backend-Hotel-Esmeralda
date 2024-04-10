@@ -17,7 +17,7 @@ const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: "guest.profile.photo",
-    acl: "public-read", // Esto hace que las imágenes sean públicas
+    acl: "public-read", 
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },

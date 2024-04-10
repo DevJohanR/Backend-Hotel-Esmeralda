@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const routes = require("./routes/index");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 // Create server
 const server = express();
@@ -19,6 +20,8 @@ server.use(cookieParser());
 server.use(morgan("dev"));
 server.use(cors());
 server.use(express.json());
+server.use(bodyParser.json({ limit: '20mb' }));
+server.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 
 //Routes
 server.use("/", routes);

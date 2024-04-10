@@ -17,7 +17,7 @@ router.get("/checkUser", checkUserExists);
 router.get("/allUsers", authenticateToken, getAllUsers);
 router.post("/login", login);
 router.get("/userinfo", authenticateToken, userInfo);
-router.put('/profile/:userId', upload.single('photo'), updateProfile);
+router.put('/profile/:userId', upload.single('photo'),authenticateToken, updateProfile);
 router.get("/confirm/:verificationCode", confirmEmail);
 router.put("/guest-profile/:id/photo", updateGuestProfilePhoto);
 
