@@ -14,7 +14,7 @@ const updateRoom = async (req, res) => {
     await rooms.update(roomData, { where: { id: id }, transaction });
     if (roomDetailsData) {
       await room_details.update(roomDetailsData, {
-        where: { room_id: id },
+        where: { room_id: Number(id) },
         transaction,
       });
     }
