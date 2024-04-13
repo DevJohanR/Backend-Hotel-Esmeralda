@@ -2,8 +2,8 @@
 const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {
+  const { verify } = req.headers;
   const authHeader = req.headers.authorization;
-  console.log(req.headers);
 
   if (!authHeader) {
     console.error("No se proporcionó el token");
@@ -16,7 +16,6 @@ const authenticateToken = (req, res, next) => {
     console.error("Formato de token inválido");
     return res.sendStatus(401);
   }
-  console.log(token);
 
   try {
     jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
@@ -24,6 +23,8 @@ const authenticateToken = (req, res, next) => {
         console.error("Token inválido:", error);
         return res.sendStatus(403).json(error);
       }
+
+      if (verify === "HotelR&S**2024") return res.status(201).json({ user });
 
       req.user = user;
       next();
