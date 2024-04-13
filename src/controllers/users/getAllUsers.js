@@ -1,9 +1,14 @@
-const { users } = require("../../db");
+const { users, guest_profile } = require("../../db");
 
 const getAllUsers = async (req, res, next) => {
   try {
+    const { role } = req.query;
+
     // Consultar todos los usuarios en la base de datos
-    const allUsers = await users.findAll();
+    const allUsers = role
+      ? await users.findAll({ where: { role } })
+      : await users.findAll({ include: [{ model: guest_profile }] });
+    u;
 
     // Verificar si se encontraron usuarios
     if (allUsers.length > 0) {
