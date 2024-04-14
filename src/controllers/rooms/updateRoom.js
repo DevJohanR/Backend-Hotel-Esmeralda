@@ -12,9 +12,10 @@ const updateRoom = async (req, res) => {
       return res.status(404).send("Room not found");
     }
     await rooms.update(roomData, { where: { id: id }, transaction });
+    console.log(roomDetailsData);
     if (roomDetailsData) {
       await room_details.update(roomDetailsData, {
-        where: { room_id: Number(id) },
+        where: { room_id:id },
         transaction,
       });
     }

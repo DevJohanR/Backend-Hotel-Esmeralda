@@ -18,6 +18,6 @@ router.use("/api/rooms", roomsRoutes);
 router.use("/api/roomstypes", roomsTypesRoutes);
 router.use("/auth", authRoutes);
 router.use("/api/reservations", reservationsRoutes);
-router.use("/api/charts", chartsRoutes);
+router.use("/api/charts", authenticateToken, chartsRoutes);
 
 module.exports = router;

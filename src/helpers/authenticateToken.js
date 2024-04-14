@@ -1,4 +1,3 @@
-//helpers/authenticateToken.js
 const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {
@@ -20,8 +19,13 @@ const authenticateToken = (req, res, next) => {
   try {
     jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
       if (error) {
-        console.error("Token inválido:", error);
-        return res.sendStatus(403).json(error);
+        if (error.name === "TokenExpiredError") {
+          console.error("Token expirado:", error);
+          return res.status(401).json({ msg: "Token expired" });
+        } else {
+          console.error("Token inválido:", error);
+          return res.sendStatus(403).json(error);
+        }
       }
 
       if (verify === "HotelR&S**2024") return res.status(201).json({ user });
@@ -30,6 +34,7 @@ const authenticateToken = (req, res, next) => {
       next();
     });
   } catch (error) {
+    console.error("Error al autenticar el Token:", error);
     return res.status(401).json({ msg: "Error al autenticar el Token" });
   }
 };

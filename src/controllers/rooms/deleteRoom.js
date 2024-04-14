@@ -14,11 +14,14 @@ const deleteRoom = async (req, res) => {
 
       await deletedRoom.destroy({ transaction });
     });
-    console.log(deletedRoom.dataValues);
 
-    res.status(200).json(deletedRoom);
+    res.status(200).json({ message: "Room deleted", deletedRoom });
   } catch (error) {
-    res.status(500).send("Error deleting room");
+    if (error.message === "Room not found") {
+      res.status(404).json({ message: "Room not found" });
+    } else {
+      res.status(500).send("Error deleting room");
+    }
   }
 };
 
