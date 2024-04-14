@@ -6,9 +6,11 @@ const getAllUsers = async (req, res, next) => {
 
     // Consultar todos los usuarios en la base de datos
     const allUsers = role
-      ? await users.findAll({ where: { role } })
+      ? await users.findAll({
+          where: { role },
+          include: [{ model: guest_profile }],
+        })
       : await users.findAll({ include: [{ model: guest_profile }] });
-    u;
 
     // Verificar si se encontraron usuarios
     if (allUsers.length > 0) {
