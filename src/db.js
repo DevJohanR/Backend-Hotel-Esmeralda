@@ -54,7 +54,7 @@ const {
 } = sequelize.models;
 
 // Relaciones
-users.hasOne(guest_profile, { foreignKey: "user_id" });
+users.hasOne(guest_profile, { foreignKey: "user_id", onDelete: "CASCADE" });
 guest_profile.belongsTo(users, { foreignKey: "user_id" });
 
 reservations.belongsTo(rooms, { foreignKey: "room_id" });
@@ -78,7 +78,8 @@ spa_reservations.belongsTo(room_spa, { foreignKey: "spa_room_id" });
 room_spa.hasMany(spa_reservations, { foreignKey: "spa_room_id" });
 
 user_reservations.belongsTo(reservations, { foreignKey: "reservation_id" });
-user_reservations.belongsTo(spa_reservations, {foreignKey: "spa_reservation_id",
+user_reservations.belongsTo(spa_reservations, {
+  foreignKey: "spa_reservation_id",
 });
 
 reservations.hasOne(user_reservations, { foreignKey: "reservation_id" });
