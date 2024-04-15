@@ -15,12 +15,15 @@ const login = async (req, res) => {
     const user = await users.findOne({
       where: {
         [Op.or]: [
-          { email: usernameOrEmail },
-          { username: usernameOrEmail },
-        ].filter(Boolean),
+          {
+            email: usernameOrEmail.toLowerCase(),
+          },
+          { username: usernameOrEmail.toLowerCase() },
+        ],
       },
     });
 
+    console.log(user);
     if (!user) {
       return res.status(401).json({
         message:

@@ -1,8 +1,14 @@
-const { reservations } = require("../../db");
+const { reservations, users, guest_profile, rooms } = require("../../db");
 
 const getReservations = async (req, res, next) => {
   try {
-    const allReservations = await reservations.findAll(req.body);
+    const { id } = req.params;
+    const allReservations = id
+      ? await reservations.findAll({
+          where: { id: id },
+          include: { all: true, nested: true },
+        })
+      : await reservations.findAll({ include: { all: true, nested: true } });
 
     return res.status(200).json(allReservations);
   } catch (error) {
