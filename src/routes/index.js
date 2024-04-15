@@ -7,6 +7,7 @@ const chartsRoutes = require("./charts/charts");
 const reservationsRoutes = require("./reservations/reservations");
 const { authenticateToken } = require("../helpers/authenticateToken");
 
+
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -15,9 +16,12 @@ router.get("/", (req, res) => {
 
 router.use("/api/dishes", dishesRoutes);
 router.use("/api/rooms", roomsRoutes);
+router.use("/api/cars", cars);
 router.use("/api/roomstypes", roomsTypesRoutes);
-router.use("/auth", authRoutes);
-router.use("/api/reservations", reservationsRoutes);
-router.use("/api/charts", authenticateToken, chartsRoutes);
+router.use('/auth', authRoutes);
+router.use('/api/reservations', reservationsRoutes);
+router.use('/api/charts', chartsRoutes);
+
+
 
 module.exports = router;

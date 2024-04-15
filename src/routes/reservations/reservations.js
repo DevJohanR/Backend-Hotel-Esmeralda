@@ -5,9 +5,6 @@ const {
   createReservation,
 } = require("../../controllers/reservations/createReservations");
 const {
-  getReservations,
-} = require("../../controllers/reservations/getReservations");
-const {
   checkOutReservations,
 } = require("../../controllers/reservations/checkOutReservations");
 
@@ -17,6 +14,15 @@ const { get } = require("http");
 const {
   getUserReservations,
 } = require("../../controllers/userReservations/getUserReservations");
+const {
+  createRestaurantReservation,
+} = require("../../controllers/restaurant_reserv/create");
+const {
+  cancelRestaurantReservation,
+} = require("../../controllers/restaurant_reserv/cancel_reserv");
+const {
+  editRestaurantReservation,
+} = require("../../controllers/restaurant_reserv/edit_reserv");
 
 const router = Router();
 
@@ -25,5 +31,8 @@ router.get("/", getReservations);
 router.post("/checkin", checkinReservations);
 router.post("/checkout", checkOutReservations);
 router.get("/userReservations/:userId", getUserReservations);
+router.post("/restaurant", createRestaurantReservation);
+router.patch("/cancel_reserv/:id", cancelRestaurantReservation);
+router.patch("/edit_reserv/:id", editRestaurantReservation);
 
 module.exports = router;
