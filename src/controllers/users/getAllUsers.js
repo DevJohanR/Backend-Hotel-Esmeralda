@@ -15,7 +15,7 @@ const getAllUsers = async (req, res, next) => {
           include: [{ model: guest_profile }],
         });
     if (id) {
-      allUsers = allUsers.filter((user) => user.id === Number(id));
+      allUsers = allUsers.filter((user) => user.id === id);
     }
 
     // Verificar si se encontraron usuarios
