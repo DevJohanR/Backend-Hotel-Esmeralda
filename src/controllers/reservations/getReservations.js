@@ -6,10 +6,10 @@ const getReservations = async (req, res, next) => {
     const allReservations = id
       ? await reservations.findAll({
           where: { id: id },
-          include: { all: true, nested: true },
+          include: { all: true },
         })
-      : await reservations.findAll({ include: { all: true, nested: true } });
-
+      : await reservations.findAll({ include: { all: true } });
+    console.log("allReservations", allReservations);
     return res.status(200).json(allReservations);
   } catch (error) {
     console.log("Error getting reservation: ", error);
