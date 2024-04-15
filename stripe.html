@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Checkout</title>
+</head>
+
+<body>
+    <button onclick="startCheckout()">Start Checkout</button>
+
+    <script>
+        function startCheckout() {
+            fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    // asegúrate de que los datos aquí estén completos y bien formados
+                    exampleData: 'exampleValue'
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    window.location.href = data.url; // Redirige al URL de Stripe para completar el pago
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+
+</html>

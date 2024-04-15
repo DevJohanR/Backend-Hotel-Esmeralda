@@ -7,44 +7,41 @@ const Stripe = require('stripe');
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
 // Define la función createSession y expórtala usando module.exports
-const createSession = async (req, res) => {
-  try {
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        // agregar objeto con las reservas adquiridas (las 3 reservas)
-        {
-          price_data: {
-            product_data: {
-              name: "Laptop",
-            },
-            currency: "usd",
-            unit_amount: 2000,
-          },
-          quantity: 1,
-        },
-        {
-          price_data: {
-            product_data: {
-              name: "TV",
-            },
-            currency: "usd",
-            unit_amount: 1000,
-          },
-          quantity: 2,
-        },
-      ],
-      mode: "payment",
-      success_url: "http://localhost:4000/api",
-      cancel_url: "http://localhost:4000/api/dishes"
+const createCheckoutSession = async (req, res) => {
+  const { items, userId } = req.body; // Asumamos que también recibimos userId para personalizar las URLs de redirección
 
+  // Convertir los productos recibidos a line_items para Stripe
+  const lineItems = items.map(item => {
+    return {
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: item.price,
+      },
+      quantity: item.quantity,
+    };
+  });
+
+  try {
+    // Los parámetros que quieras pasar, por ejemplo, el ID de usuario
+    const queryParams = new URLSearchParams({ userId }).toString();
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `http://localhost:4000/success?${queryParams}`, // Incluye los parámetros en la URL
+      cancel_url: `http://localhost:4000/cancel?${queryParams}`,
     });
-//agregar condicional si el pago fue exitoso  cambiar el estado de reserva a confirmada y si no dejarla en pendiente
-    console.log(session);
-    return res.json({ url: session.url });
+
+    // Enviar la URL de la sesión de pago de Stripe
+    res.json({ url: session.url });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    console.error('Error creating checkout session:', error);
+    res.status(500).send({ error: error.message });
   }
 };
+module.exports = { createCheckoutSession };
 
-// Exporta la función createSession usando CommonJS
-module.exports = { createSession };
