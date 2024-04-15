@@ -5,6 +5,7 @@ const roomsTypesRoutes = require("./rooms/roomsTypes");
 const authRoutes = require("./users/users");
 const chartsRoutes = require("./charts/charts");
 const reservationsRoutes = require("./reservations/reservations");
+const cars = require("./cars/cars");
 const { authenticateToken } = require("../helpers/authenticateToken");
 
 
@@ -19,8 +20,8 @@ router.use("/api/rooms", roomsRoutes);
 router.use("/api/cars", cars);
 router.use("/api/roomstypes", roomsTypesRoutes);
 router.use('/auth', authRoutes);
-router.use('/api/reservations', reservationsRoutes);
-router.use('/api/charts', chartsRoutes);
+router.use('/api/reservations',authenticateToken, reservationsRoutes);
+router.use('/api/charts', authenticateToken, chartsRoutes);
 
 
 

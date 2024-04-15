@@ -1,4 +1,3 @@
-const sequelize = require("sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
@@ -18,7 +17,7 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     transmision: {
-      type: DataTypes.ENUM("manual", "automatic", "manualandautomatic"),
+      type: DataTypes.ENUM("Manual", "Automatic", "Hybrid"),
       allowNull: false,
       defaultValue: "manual",
     },
@@ -26,14 +25,10 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    sport_car: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
     type_car: {
-      type: DataTypes.ENUM("sedan", "coupe", "minivan"),
+      type: DataTypes.ENUM("Sedan", "Coupe", "Family","Sport"),
       allowNull: false,
-      defaultValue: "sedan",
+      defaultValue: "Sedan",
     },
     price_per_day: {
       type: DataTypes.FLOAT,

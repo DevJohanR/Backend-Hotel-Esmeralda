@@ -10,7 +10,6 @@ const getUserReservations = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    // Buscar todas las reservas del usuario en la tabla user_reservations
     const userReservations = await user_reservations.findAll({
       where: { user_id: userId }, 
       include: [

@@ -17,11 +17,9 @@ module.exports = (sequelize) => {
     },
     spaReservation_Id: {
       type: DataTypes.STRING,
-      //allowNull: false,
     },
     carReservation_Id: {
       type: DataTypes.STRING,
-      //allowNull: false,
     },
   });
 };
