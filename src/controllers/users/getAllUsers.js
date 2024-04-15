@@ -10,9 +10,11 @@ const getAllUsers = async (req, res, next) => {
       ? await users.findAll({
           where: { role },
           include: [{ model: guest_profile }],
+          attributes: { exclude: ["password"] },
         })
       : await users.findAll({
           include: [{ model: guest_profile }],
+          attributes: { exclude: ["password"] },
         });
     if (id) {
       allUsers = allUsers.filter((user) => user.id === id);
