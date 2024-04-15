@@ -11,23 +11,37 @@ module.exports = (sequelize) => {
     },
     user_id: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
     },
     full_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    birth: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+
     },
     phone_number: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    document: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     photo_url: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: "not found",
     },
     gender: {
       type: DataTypes.ENUM("male", "female", "other"),
@@ -36,7 +50,7 @@ module.exports = (sequelize) => {
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      allowNull: false,
+      allowNull: true,
     },
   });
 };

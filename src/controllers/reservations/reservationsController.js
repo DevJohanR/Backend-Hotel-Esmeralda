@@ -1,4 +1,4 @@
-const { reservations } = require("../db"); // Importa el modelo de reservaciones
+const { reservations } = require("../../db"); // Importa el modelo de reservaciones
 
 // Controlador para crear una nueva reservación
 exports.createReservation = async (req, res) => {
