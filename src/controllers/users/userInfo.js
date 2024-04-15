@@ -2,7 +2,6 @@ const { users, guest_profile } = require('../../db');
 
 const userInfo = async (req, res) => {
   try {
-    // Obtiene el ID del usuario del objeto de usuario adjunto a la solicitud
     const userId = req.user.id;
 
     const userWithProfile = await users.findOne({
@@ -10,7 +9,7 @@ const userInfo = async (req, res) => {
       include: [{
         model: guest_profile,
         as: 'guest_profile',
-        required: false // Permite que guest_profile sea nulo
+        required: false 
       }]
     });
 
@@ -24,6 +23,7 @@ const userInfo = async (req, res) => {
       username: userWithProfile.username,
       email: userWithProfile.email,
       role: userWithProfile.role,
+      emailVerified: userWithProfile.emailVerified,
       is_active: userWithProfile.is_active,
     };
 
@@ -36,6 +36,10 @@ const userInfo = async (req, res) => {
         address: userWithProfile.guest_profile.address,
         photo_url: userWithProfile.guest_profile.photo_url,
         gender: userWithProfile.guest_profile.gender,
+        birth: userWithProfile.guest_profile.birth,
+        document: userWithProfile.guest_profile.document,
+        country: userWithProfile.guest_profile.country,
+        
       };
     }
 
