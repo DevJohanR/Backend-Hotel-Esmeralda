@@ -25,8 +25,8 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    image_url: {
-      type: DataTypes.STRING,
+    photos: {
+      type: DataTypes.ARRAY(DataTypes.TEXT),
       allowNull: true,
     },
     max_capacity: {
