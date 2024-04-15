@@ -57,7 +57,7 @@ const {
 } = sequelize.models;
 
 // Relaciones
-users.hasOne(guest_profile, { foreignKey: "user_id" });
+users.hasOne(guest_profile, { foreignKey: "user_id", onDelete: "CASCADE" });
 guest_profile.belongsTo(users, { foreignKey: "user_id" });
 
 reservations.belongsTo(rooms, { foreignKey: "room_id" });
