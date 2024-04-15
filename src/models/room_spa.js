@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     service_type: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.TEXT),
       allowNull: false,
     },
     photos: {
