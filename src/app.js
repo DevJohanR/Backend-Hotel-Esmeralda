@@ -5,6 +5,9 @@ const cookieParser = require("cookie-parser");
 const routes = require("./routes/index");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { Clerk } = require("@clerk/clerk-sdk-node");
+require("dotenv").config();
+const { CLERK_WEBHOOK_SECRET_KEY } = process.env;
 
 // Create server
 const server = express();
@@ -20,13 +23,15 @@ server.use(cookieParser());
 server.use(morgan("dev"));
 server.use(cors());
 server.use(express.json());
-server.use(bodyParser.json({ limit: '20mb' }));
-server.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
-
+server.use(bodyParser.json({ limit: "20mb" }));
+server.use(bodyParser.urlencoded({ limit: "20mb", extended: true }));
 
 //Routes
 server.use("/", routes);
 
+const clerk = new Clerk({
+  apiKey: CLERK_WEBHOOK_SECRET_KEY,
+});
 
 // Error catching endware.
 server.use((err, req, res, next) => {
@@ -35,7 +40,5 @@ server.use((err, req, res, next) => {
   console.error(err);
   res.status(status).send(message);
 });
-
-
 
 module.exports = server;
