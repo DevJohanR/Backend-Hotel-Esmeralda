@@ -24,8 +24,6 @@ server.use(bodyParser.json({ limit: '20mb' }));
 server.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 
 
-//Payment
-server.use(paymentRoutes);
 
 
 //Routes

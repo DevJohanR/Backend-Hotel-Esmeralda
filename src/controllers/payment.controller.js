@@ -1,18 +1,15 @@
 
-// Cambia la importación de Stripe a CommonJS
 const Stripe = require('stripe');
-// Importa la clave privada de Stripe desde tu archivo de configuración usando CommonJS
-const { STRIPE_PRIVATE_KEY } = require('../db_config.js');
-
 
 // Crea una instancia de Stripe con tu clave privada
-const stripe = new Stripe(STRIPE_PRIVATE_KEY);
+const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
 // Define la función createSession y expórtala usando module.exports
 const createSession = async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
       line_items: [
+        // agregar objeto con las reservas adquiridas (las 3 reservas)
         {
           price_data: {
             product_data: {
@@ -35,10 +32,11 @@ const createSession = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
-    });
+      success_url: "http://localhost:3000/bookingFour",
+      cancel_url: "http://localhost:4000/api/dishes"
 
+    });
+//agregar condicional si el pago fue exitoso  cambiar el estado de reserva a confirmada y si no dejarla en pendiente
     console.log(session);
     return res.json({ url: session.url });
   } catch (error) {
