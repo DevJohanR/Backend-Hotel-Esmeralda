@@ -9,6 +9,8 @@ const { updateProfile } = require("../../controllers/users/updateProfile");
 const { confirmEmail } = require("../../controllers/email/sendgridController");
 const updateGuestProfilePhoto = require("../../controllers/users/updatePhoto");
 const upload = require("../../controllers/uploads3/multerConfig");
+const { requestPasswordReset, resetPassword } = require('../../controllers/passwordResetController');
+
 
 const router = Router();
 
@@ -27,5 +29,7 @@ router.put(
 router.get("/confirm/:verificationCode", confirmEmail);
 router.put("/guest-profile/:id/photo", updateGuestProfilePhoto);
 router.post("/", authenticateToken);
+router.post('/request-password-reset', requestPasswordReset);
+router.post('/reset-password', resetPassword);
 
 module.exports = router;
