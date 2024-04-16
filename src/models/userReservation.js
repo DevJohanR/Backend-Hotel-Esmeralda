@@ -15,11 +15,26 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    spaReservation_Id: {
-      type: DataTypes.STRING,
+    spaReservation_id: { 
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
-    carReservation_Id: {
-      type: DataTypes.STRING,
+    carReservation_id: { 
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    restaurantReservation_id: { 
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    total_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM("pending", "confirmed", "finalized", "cancelled"),
+      allowNull: false,
+      defaultValue: "pending",
     },
   });
 };

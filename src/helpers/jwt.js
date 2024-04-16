@@ -17,6 +17,8 @@ const generateEmailVerificationToken = (email, username) => {
 };
 
 
+
+
 // Función para generar un token JWT para autenticación
 const generateAuthToken = (userId, username, email,role) => {
   try {

@@ -1,47 +1,60 @@
-
-// Cambia la importación de Stripe a CommonJS
 const Stripe = require('stripe');
-// Importa la clave privada de Stripe desde tu archivo de configuración usando CommonJS
-
-// Crea una instancia de Stripe con tu clave privada
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
-// Define la función createSession y expórtala usando module.exports
-const createCheckoutSession = async (req, res) => {
-  const { items, userId } = req.body; // Asumamos que también recibimos userId para personalizar las URLs de redirección
-
-  // Convertir los productos recibidos a line_items para Stripe
-  const lineItems = items.map(item => {
-    return {
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.name,
-        },
-        unit_amount: item.price,
-      },
-      quantity: item.quantity,
-    };
-  });
-
+const createSession = async (req, res) => {
   try {
-    // Los parámetros que quieras pasar, por ejemplo, el ID de usuario
-    const queryParams = new URLSearchParams({ userId }).toString();
+    const { userId, room_types, room_spa, car_details, totalPrice } = req.body;
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: lineItems,
-      mode: 'payment',
-      success_url: `http://localhost:4000/success?${queryParams}`, // Incluye los parámetros en la URL
-      cancel_url: `http://localhost:4000/cancel?${queryParams}`,
+      line_items: [
+        {
+          price_data: {
+            product_data: {
+              name: room_types.name, 
+            },
+            currency: "usd",
+            unit_amount: totalPrice.room, 
+          },
+          quantity: 1,
+        },
+        {
+          price_data: {
+            product_data: {
+              name: room_spa.name, 
+            },
+            currency: "usd",
+            unit_amount: totalPrice.spa, 
+          },
+          quantity: 1,
+        },
+        {
+          price_data: {
+            product_data: {
+              name: car_details.brands, 
+            },
+            currency: "usd",
+            unit_amount: totalPrice.car, 
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: "http://localhost:3000/bookingFour?payment=success",
+      cancel_url: "http://localhost:3000/bookingFour?payment=cancel",
+      metadata: {
+        userId: userId,
+        room_types: JSON.stringify(room_types), 
+        room_spa: JSON.stringify(room_spa), 
+        car_details: JSON.stringify(car_details), 
+      },
     });
 
-    // Enviar la URL de la sesión de pago de Stripe
-    res.json({ url: session.url });
+    console.log(session.url);
+    return res.json({ url: session.url });
   } catch (error) {
     console.error('Error creating checkout session:', error);
     res.status(500).send({ error: error.message });
   }
 };
-module.exports = { createCheckoutSession };
 
+module.exports = { createSession };

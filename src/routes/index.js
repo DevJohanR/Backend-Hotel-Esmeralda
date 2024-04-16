@@ -26,6 +26,7 @@ router.use('/api/reservations',authenticateToken, reservationsRoutes);
 router.use('/api/reservation-emails', authenticateToken, reservationEmailRoutes);
 router.use('/api/charts', authenticateToken, chartsRoutes);
 router.use('/api/spa', spa);
+router.use('/api/payments', paymentRoutes);
 
 
 

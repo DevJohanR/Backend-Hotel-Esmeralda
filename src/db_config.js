@@ -24,4 +24,3 @@ if (APP_ENV === "PRODUCTION") {
   };
 }
 module.exports = DB_CONFIG;
-
