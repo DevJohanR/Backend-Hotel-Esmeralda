@@ -3,10 +3,9 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   return sequelize.define("restaurant_reserv", {
     id: {
-      type: DataTypes.UUID,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
     },
     user_id: {
       type: DataTypes.UUID,

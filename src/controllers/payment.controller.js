@@ -1,48 +1,59 @@
-
 const Stripe = require('stripe');
-
-// Crea una instancia de Stripe con tu clave privada
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
-// Define la función createSession y expórtala usando module.exports
 const createSession = async (req, res) => {
   try {
+    const { userId, room_types, room_spa, car_details, totalPrice } = req.body;
+
     const session = await stripe.checkout.sessions.create({
       line_items: [
-        // agregar objeto con las reservas adquiridas (las 3 reservas)
         {
           price_data: {
             product_data: {
-              name: "Laptop",
+              name: room_types.name, 
             },
             currency: "usd",
-            unit_amount: 2000,
+            unit_amount: totalPrice.room, 
           },
           quantity: 1,
         },
         {
           price_data: {
             product_data: {
-              name: "TV",
+              name: room_spa.name, 
             },
             currency: "usd",
-            unit_amount: 1000,
+            unit_amount: totalPrice.spa, 
           },
-          quantity: 2,
+          quantity: 1,
+        },
+        {
+          price_data: {
+            product_data: {
+              name: car_details.brands, 
+            },
+            currency: "usd",
+            unit_amount: totalPrice.car, 
+          },
+          quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: "http://localhost:3000/bookingFour",
-      cancel_url: "http://localhost:4000/api/dishes"
-
+      success_url: "http://localhost:3000/bookingFour?payment=success",
+      cancel_url: "http://localhost:3000/bookingFour?payment=cancel",
+      metadata: {
+        userId: userId,
+        room_types: JSON.stringify(room_types), 
+        room_spa: JSON.stringify(room_spa), 
+        car_details: JSON.stringify(car_details), 
+      },
     });
-//agregar condicional si el pago fue exitoso  cambiar el estado de reserva a confirmada y si no dejarla en pendiente
-    console.log(session);
+
+    console.log(session.url);
     return res.json({ url: session.url });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-// Exporta la función createSession usando CommonJS
 module.exports = { createSession };
