@@ -2,9 +2,6 @@ const {
   checkinReservations,
 } = require("../../controllers/reservations/checkInReservations");
 const {
-  createReservation,
-} = require("../../controllers/reservations/createReservations");
-const {
   checkOutReservations,
 } = require("../../controllers/reservations/checkOutReservations");
 const { Router } = require("express");
@@ -24,10 +21,13 @@ const {
 const {
   getReservations,
 } = require("../../controllers/reservations/getReservations");
+const { createRoomReservation } = require("../../controllers/reservations/createRoomReservations");
+
+const { createReservation } = require("../../controllers/reservations/createReservation");
 
 const router = Router();
 
-router.post("/", createReservation);
+router.post("/", createRoomReservation);
 router.get("/", getReservations);
 router.get("/:id", getReservations);
 router.post("/checkin", checkinReservations);
@@ -36,5 +36,6 @@ router.get("/userReservations/:userId", getUserReservations);
 router.post("/restaurant", createRestaurantReservation);
 router.patch("/cancel_reserv/:id", cancelRestaurantReservation);
 router.patch("/edit_reserv/:id", editRestaurantReservation);
+router.post("/createreservations", createReservation)
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { reservations, rooms } = require("../../db"); // Asegúrate de que este path sea correcto
+const { reservations, rooms } = require("../../db"); 
 const crypto = require("crypto");
 const { Op } = require("sequelize");
 
@@ -15,7 +15,7 @@ const generateReservationNumber = () => {
   return reservationNumber;
 };
 
-const createReservation = async (req, res, next) => {
+const createRoomReservation = async (req, res, next) => {
   try {
     const { user_id, check_in_date, check_out_date, room_id } = req.body;
 
@@ -101,4 +101,4 @@ const createReservation = async (req, res, next) => {
   }
 };
 
-module.exports = { createReservation };
+module.exports = { createRoomReservation };
