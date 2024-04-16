@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-//src/app.js
-=======
->>>>>>> development
 // Initialize express server
 const express = require("express");
 const morgan = require("morgan");

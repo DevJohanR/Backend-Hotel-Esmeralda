@@ -22,16 +22,11 @@ router.use("/api/rooms", roomsRoutes);
 router.use("/api/cars", cars);
 router.use("/api/roomstypes", roomsTypesRoutes);
 router.use('/auth', authRoutes);
-<<<<<<< HEAD
-router.use('/api/reservations', reservationsRoutes);
-router.use('/api/payments', paymentRoutes);
-=======
 router.use('/api/reservations',authenticateToken, reservationsRoutes);
 router.use('/api/reservation-emails', authenticateToken, reservationEmailRoutes);
 router.use('/api/charts', authenticateToken, chartsRoutes);
 router.use('/api/spa', spa);
 
->>>>>>> development
 
 
 module.exports = router;
