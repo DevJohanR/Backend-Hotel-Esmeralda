@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const generateEmailVerificationToken = (email, username) => {
   try {
     const token = jwt.sign({ email, username }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "24h",
     });
 
     console.log("Token generado:", token); 
@@ -17,11 +17,13 @@ const generateEmailVerificationToken = (email, username) => {
 };
 
 
+
+
 // Función para generar un token JWT para autenticación
 const generateAuthToken = (userId, username, email,role) => {
   try {
     return jwt.sign({ id: userId, username, email ,role}, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
   } catch (error) {
     console.error("Error al generar el token:", error);

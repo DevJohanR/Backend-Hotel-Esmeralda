@@ -17,15 +17,16 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    birth : {
-      type: DataTypes.DATE,
+    birth: {
+      type: DataTypes.DATEONLY,
       allowNull: true,
+
     },
     phone_number: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    document : {
+    document: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -40,15 +41,16 @@ module.exports = (sequelize) => {
     photo_url: {
       type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "not found",
     },
     gender: {
       type: DataTypes.ENUM("male", "female", "other"),
-      allowNull: true,
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      allowNull: false,
+      allowNull: true,
     },
   });
 };

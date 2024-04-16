@@ -1,5 +1,4 @@
 const { users } = require('../../db');
-const { Op } = require('sequelize');
 
 const checkUserExists = async (req, res, next) => {
   try {
