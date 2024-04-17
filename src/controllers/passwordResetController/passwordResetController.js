@@ -1,7 +1,7 @@
 // src/controllers/passwordResetController.js
 const sgMail = require('@sendgrid/mail');
-const { users } = require('../models');
 const jwt = require('jsonwebtoken');
+const { users } = require('../../db');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Function to send password reset email
