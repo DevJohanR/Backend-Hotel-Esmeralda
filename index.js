@@ -1,3 +1,4 @@
+//index.js
 require("dotenv").config();
 const server = require("./src/app");
 const initializers = require("./src/initializers");

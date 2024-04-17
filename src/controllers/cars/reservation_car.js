@@ -1,46 +1,30 @@
 const { Sequelize } = require("sequelize");
-const { car_details, car_reservations, connect } = require("../../db");
+const { car_reservations, connect } = require("../../db");
 const crypto = require("crypto");
 
 const generateReservationNumber = () => {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let reservationNumber = "";
-  for (let i = 0; i < 3; i++) {
+ const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+ let reservationNumber = "";
+ for (let i = 0; i < 3; i++) {
     reservationNumber += letters.charAt(crypto.randomInt(letters.length));
-  }
-  for (let i = 0; i < 3; i++) {
+ }
+ for (let i = 0; i < 3; i++) {
     reservationNumber += crypto.randomInt(10);
-  }
-  return reservationNumber;
+ }
+ return reservationNumber;
 };
 
 const createCarReservation = async (req, res) => {
-  const transaction = await connect.transaction();
-  try {
-    const { user_id, checkInDateTime, checkOutDateTime, car_id } = req.body;
-
-    // Obtengo los detalles del auto
-    const car = await car_details.findByPk(car_id);
-    if (!car) {
-      return res.status(404).json({ message: "Auto no encontrado" });
-    }
-
-    //  precio total basado en el precio por día del auto y la duración de la reservación
-    //
-    const pricePerDay = car.price_per_day;
-    const checkInDate = new Date(checkInDateTime);
-    const checkOutDate = new Date(checkOutDateTime);
-    const days = Math.ceil(
-      (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
-    );
-    const totalPrice = pricePerDay * days;
+ const transaction = await connect.transaction();
+ try {
+    const { user_id, checkInDateTime, checkOutDateTime, car_id, total_price } = req.body;
 
     let reservationNumber = generateReservationNumber();
     const existingReservationNumber = await car_reservations.findOne({
       where: {
         reservation_number: reservationNumber,
         status: {
-          [Sequelize.Op.ne]: "completed",
+          [Sequelize.Op.ne]: "pending",
         },
       },
     });
@@ -54,10 +38,10 @@ const createCarReservation = async (req, res) => {
       {
         reservation_number: reservationNumber,
         user_id,
-        checkInDateTime: checkInDate,
-        checkOutDateTime: checkOutDate,
-        status: "active",
-        total_price: totalPrice,
+        check_in_date: new Date(checkInDateTime), // Asegúrate de que estos campos coincidan con los nombres de los campos en tu modelo
+        check_out_date: new Date(checkOutDateTime), // Asegúrate de que estos campos coincidan con los nombres de los campos en tu modelo
+        status: "pending",
+        total_price: total_price, 
         car_id,
       },
       { transaction }
@@ -65,13 +49,13 @@ const createCarReservation = async (req, res) => {
 
     await transaction.commit();
     return res.status(201).json(newReservation);
-  } catch (error) {
+ } catch (error) {
     await transaction.rollback();
     console.error(error);
     return res
       .status(500)
       .json({ message: "Error al crear la reservación de auto" });
-  }
+ }
 };
 
 module.exports = { createCarReservation };

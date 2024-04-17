@@ -3,10 +3,9 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   return sequelize.define("car_reservations", {
     id: {
-      type: DataTypes.UUID,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
     },
     reservation_number: {
       type: DataTypes.STRING,
@@ -17,19 +16,19 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    checkInDateTime: {
+    check_in_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    checkOutDateTime: {
+    check_out_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("pending", "confirmed", "finalized", "cancelled"),
+      type: DataTypes.ENUM('pending', 'confirmed', 'finalized', 'cancelled'),
       allowNull: false,
-      defaultValue: "pending",
-    },
+      defaultValue: 'pending',
+   },
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,

@@ -9,7 +9,7 @@ const reservationEmailRoutes = require('./reservationEmailRoutes/reservationEmai
 const cars = require("./cars/cars");
 const spa = require("./roomSpa/roomSpa");
 const { authenticateToken } = require("../helpers/authenticateToken");
-
+const paymentRoutes = require('./payment.routes');
 
 const router = Router();
 
@@ -26,6 +26,7 @@ router.use('/api/reservations',authenticateToken, reservationsRoutes);
 router.use('/api/reservation-emails', authenticateToken, reservationEmailRoutes);
 router.use('/api/charts', authenticateToken, chartsRoutes);
 router.use('/api/spa', spa);
+router.use('/api/payments', paymentRoutes);
 
 
 

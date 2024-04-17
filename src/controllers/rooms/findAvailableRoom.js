@@ -1,10 +1,9 @@
 const { Op, Sequelize } = require('sequelize');
-const { rooms, reservations, room_types, room_details } = require('../../db');
+const { rooms, room_types, room_details } = require('../../db');
 
 const findAvailableRoom = async (req, res, next) => {
  try {
      const { from, to, capacity } = req.query;
- 
      const fromDate = new Date(from).toISOString();
      const toDate = new Date(to).toISOString();
      const availableRooms = await rooms.findAll({
