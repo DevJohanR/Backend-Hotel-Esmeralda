@@ -1,140 +1,60 @@
-const { Op, Sequelize } = require('sequelize');
-const { reservations, rooms, spa_reservations, car_reservations } = require('../../db');
-const crypto = require('crypto');
+const { createRoomReservation } = require('../controllers/roomReservationFunctions');
+const { createCarReservation } = require('../controllers/carReservationFunctions');
+const { createSpaReservation } = require('../controllers/spaReservationFunctions');
 
-const generateReservationNumber = () => {
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let reservationNumber = '';
-  for (let i = 0; i < 3; i++) {
-    reservationNumber += letters.charAt(crypto.randomInt(letters.length));
-  }
-  for (let i = 0; i < 3; i++) {
-    reservationNumber += crypto.randomInt(10);
-  }
-  return reservationNumber;
-};
-
-const createReservation = async (req, res, next) => {
-  const t = await sequelize.transaction();
+const makeReservation = async (req, res) => {
   try {
-    const { user_id, check_in_date, check_out_date, room_id, car_check_in_date, car_check_out_date, car_total_price, car_id, spa_check_in_date, spa_check_out_date, spa_total_price } = req.query;
+    const { service, ...reservationDetails } = req.body;
 
- 
-    const existingRoomReservation = await reservations.findOne({
-      where: {
-        user_id,
-        status: 'pending',
-        [Op.or]: [
-          {
-            check_in_date: {
-              [Op.lte]: new Date(check_out_date),
-              [Op.gte]: new Date(check_in_date)
-            }
-          },
-          {
-            check_out_date: {
-              [Op.lte]: new Date(check_out_date),
-              [Op.gte]: new Date(check_in_date)
-            }
-          }
-        ]
-      },
-      transaction: t
-    });
-
-    if (existingRoomReservation) {
-      await t.rollback();
-      return res.status(400).json({ message: 'Ya tienes una reserva de habitación pendiente para esas fechas' });
+    
+    let canMakeReservation = false;
+    if (service === 'room') {
+     
+      canMakeReservation = await checkRoomReservation(reservationDetails);
+    } else if (service === 'car') {
+     
+      canMakeReservation = await checkCarReservation(reservationDetails);
+    } else if (service === 'spa') {
+     
+      canMakeReservation = await checkSpaReservation(reservationDetails);
     }
 
-    // Verificar si el usuario desea reservar un spa para las fechas especificadas
-    if (spa_check_in_date && spa_check_out_date) {
-      const existingSpaReservation = await spa_reservations.findOne({
-        where: {
-          user_id,
-          status: 'active',
-          checkInDateTime: {
-            [Op.lt]: new Date(spa_check_out_date)
-          },
-          checkOutDateTime: {
-            [Op.gt]: new Date(spa_check_in_date)
-          }
-        },
-        transaction: t
-      });
-
-      if (existingSpaReservation) {
-        await t.rollback();
-        return res.status(400).json({ message: 'Ya tienes una reserva de spa activa para esas fechas' });
-      }
-    }
-
-    // Verificar si el usuario desea reservar un coche para las fechas especificadas
-    if (car_check_in_date && car_check_out_date) {
-      const existingCarReservation = await car_reservations.findOne({
-        where: {
-          user_id,
-          status: 'confirmed',
-          checkInDateTime: {
-            [Op.lt]: new Date(car_check_out_date)
-          },
-          checkOutDateTime: {
-            [Op.gt]: new Date(car_check_in_date)
-          }
-        },
-        transaction: t
-      });
-
-      if (existingCarReservation) {
-        await t.rollback();
-        return res.status(400).json({ message: 'Ya tienes una reserva de coche activa para esas fechas' });
-      }
+    if (!canMakeReservation) {
+      return res.status(400).json({ message: 'No se puede hacer la reserva' });
     }
 
    
-    const reservationNumber = generateReservationNumber();
-    const newRoomReservation = await reservations.create({
-      reservation_number: reservationNumber,
-      user_id,
-      check_in_date: new Date(check_in_date),
-      check_out_date: new Date(check_out_date),
-      status: 'pending',
-      room_id,
-    }, { transaction: t });
-
-  
-    await t.commit();
-
-    // Array con los precios de los servicios
-    const prices = [];
-
-    // Precio de la habitación
-    const roomPrice = 200;
-    prices.push({ service: 'Habitación', price: roomPrice });
-
-    // Precio del spa si se ha reservado
-    if (spa_check_in_date && spa_check_out_date) {
-      prices.push({ service: 'Spa', price: spa_total_price });
+    let newReservation;
+    if (service === 'room') {
+      newReservation = await createRoomReservation(reservationDetails);
+    } else if (service === 'car') {
+      newReservation = await createCarReservation(reservationDetails);
+    } else if (service === 'spa') {
+      newReservation = await createSpaReservation(reservationDetails);
     }
 
-    // Precio del coche si se ha reservado
-    if (car_check_in_date && car_check_out_date) {
-      prices.push({ service: 'Coche', price: car_total_price });
-    }
-
-    // Devolver respuesta con éxito y detalles de la reserva
-    return res.status(201).json({ 
-      message: 'Reserva de habitación creada exitosamente', 
-      reservation: newRoomReservation,
-      prices: prices
-    });
-
+    res.status(201).json(newReservation);
   } catch (error) {
-    // En caso de error, hacer rollback de la transacción y devolver un mensaje de error
     console.error(error);
-    await t.rollback();
-    res.status(500).json({ message: 'Error al crear la reserva' });
+    res.status(500).json({ message: 'Error al hacer la reserva' });
   }
 };
 
-module.exports = { createReservation };
+
+const checkRoomReservation = async ({ user_id, check_in_date, check_out_date }) => {
+
+};
+
+
+const checkCarReservation = async ({ user_id, checkInDateTime, checkOutDateTime }) => {
+  // Lógica para verificar si la reserva de coche puede ser hecha
+  // Retorna true si se puede hacer la reserva, false de lo contrario
+};
+
+// Función para verificar la reserva de spa
+const checkSpaReservation = async ({ user_id, checkInDateTime, checkOutDateTime }) => {
+  // Lógica para verificar si la reserva de spa puede ser hecha
+  // Retorna true si se puede hacer la reserva, false de lo contrario
+};
+
+module.exports = { makeReservation };
