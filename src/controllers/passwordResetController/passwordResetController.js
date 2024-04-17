@@ -13,7 +13,7 @@ const sendPasswordResetEmail = async ({ username, email }) => {
       to: email,
       from: process.env.EMAIL_FROM,
       subject: 'Reset your password',
-      templateId: 'd-3236090be3234a4b88a3e56a8c34d460', // new template ID for reset
+      templateId: 'd-3236090be3234a4b88a3e56a8c34d460',
       dynamicTemplateData: {
         username: username,
         resetUrl: resetUrl

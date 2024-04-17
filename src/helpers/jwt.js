@@ -16,6 +16,21 @@ const generateEmailVerificationToken = (email, username) => {
   }
 };
 
+const generatePasswordReset = (email, username) => {
+  try {
+    const token = jwt.sign({ email, username }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    console.log("Token generado:", token); 
+
+    return token;
+  } catch (error) {
+    console.error("Error al generar el token:", error);
+    throw error;
+  }
+};
+
 
 
 
@@ -33,6 +48,7 @@ const generateAuthToken = (userId, username, email,role) => {
 
 module.exports = {
    generateEmailVerificationToken,
-   generateAuthToken
+   generateAuthToken,
+  generatePasswordReset
  };
  
