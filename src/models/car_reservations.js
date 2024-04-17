@@ -16,19 +16,19 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    checkInDateTime: {
+    check_in_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    checkOutDateTime: {
+    check_out_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("pending", "confirmed", "finalized", "cancelled"),
+      type: DataTypes.ENUM('pending', 'confirmed', 'finalized', 'cancelled'),
       allowNull: false,
-      defaultValue: "pending",
-    },
+      defaultValue: 'pending',
+   },
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,

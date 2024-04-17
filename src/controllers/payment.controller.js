@@ -1,53 +1,38 @@
 const Stripe = require('stripe');
+const { sendReservationConfirmationEmail } = require('./email/reservationEmailService');
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
 const createSession = async (req, res) => {
   try {
-    const { userId, room_types, room_spa, car_details, totalPrice } = req.body;
+    const { userId, services, totalPrice } = req.body;
+    console.log('Total price: ', totalPrice);
+    console.log('Services: ', services);
+    console.log('User ID: ', userId);
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
           price_data: {
             product_data: {
-              name: room_types.name, 
+              name: 'Services',
             },
-            currency: "usd",
-            unit_amount: totalPrice.room, 
-          },
-          quantity: 1,
-        },
-        {
-          price_data: {
-            product_data: {
-              name: room_spa.name, 
-            },
-            currency: "usd",
-            unit_amount: totalPrice.spa, 
-          },
-          quantity: 1,
-        },
-        {
-          price_data: {
-            product_data: {
-              name: car_details.brands, 
-            },
-            currency: "usd",
-            unit_amount: totalPrice.car, 
+            currency: 'usd',
+            unit_amount: totalPrice * 100, // Convertimos el precio total a centavos
           },
           quantity: 1,
         },
       ],
-      mode: "payment",
-      success_url: "http://localhost:3000/bookingFour?payment=success",
-      cancel_url: "http://localhost:3000/bookingFour?payment=cancel",
+      mode: 'payment',
+      success_url: 'http://localhost:3000/bookingFour?payment=success',
+      cancel_url: 'http://localhost:3000/bookingFour?payment=cancel',
       metadata: {
         userId: userId,
-        room_types: JSON.stringify(room_types), 
-        room_spa: JSON.stringify(room_spa), 
-        car_details: JSON.stringify(car_details), 
+        services: JSON.stringify(services),
       },
     });
+
+    const reservationDetails = JSON.stringify({ services, totalPrice });
+    await sendReservationConfirmationEmail({ username: 'aresvm13', email: 'alfonsovengoechea@gmail.com', reservationDetails });
 
     console.log(session.url);
     return res.json({ url: session.url });

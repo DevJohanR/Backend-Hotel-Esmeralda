@@ -6,6 +6,7 @@ const { editCars } = require("../../controllers/cars/editCar");
 const {createCarReservation,} = require("../../controllers/cars/reservation_car");
 const { editCarReservation } = require("../../controllers/cars/edit_reserv");
 const {cancelCarReservation,} = require("../../controllers/cars/cancel_reserv");
+const { findAvailableCar } = require("../../controllers/cars/findAvailableCar");
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.delete("/:id", deleteCar);
 router.post("/reservation", createCarReservation);
 router.patch("/edit_reserv/:id", editCarReservation);
 router.patch("/cancel_reserv/:id", cancelCarReservation);
+router.get("/available", findAvailableCar);
 
 module.exports = router;

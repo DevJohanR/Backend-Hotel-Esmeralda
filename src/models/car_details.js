@@ -38,5 +38,10 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    status: {
+      type: DataTypes.ENUM("available", "busy", "maintenance"),
+      allowNull: false,
+      defaultValue: "available" 
+    },
   });
 };
