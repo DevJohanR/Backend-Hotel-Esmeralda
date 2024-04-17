@@ -1,60 +1,48 @@
-const { createRoomReservation } = require('../controllers/roomReservationFunctions');
-const { createCarReservation } = require('../controllers/carReservationFunctions');
-const { createSpaReservation } = require('../controllers/spaReservationFunctions');
+const { createRoomReservation } = require('../reservations/createRoomReservations');
+const { createCarReservation } = require('../cars/reservation_car');
+const { createSpaReservation } = require('../spa/CreateReservaition');
+const crypto = require('crypto');
 
-const makeReservation = async (req, res) => {
+const generateReservationNumber = () => {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let reservationNumber = "";
+  for (let i = 0; i < 3; i++) {
+    reservationNumber += letters.charAt(crypto.randomInt(letters.length));
+  }
+  for (let i = 0; i < 3; i++) {
+    reservationNumber += crypto.randomInt(10);
+  }
+  return reservationNumber;
+};
+
+const createReservation = async (req, res, next) => {
+  const reservationNumber = generateReservationNumber();
   try {
-    const { service, ...reservationDetails } = req.body;
+    const { roomAvailability, carAvailability, spaAvailability } = req.body;
 
-    
-    let canMakeReservation = false;
-    if (service === 'room') {
-     
-      canMakeReservation = await checkRoomReservation(reservationDetails);
-    } else if (service === 'car') {
-     
-      canMakeReservation = await checkCarReservation(reservationDetails);
-    } else if (service === 'spa') {
-     
-      canMakeReservation = await checkSpaReservation(reservationDetails);
+
+    if (!roomAvailability || !carAvailability || !spaAvailability) {
+      return res.status(400).json({ message: 'One or more services are not available at the requested time.' });
     }
 
-    if (!canMakeReservation) {
-      return res.status(400).json({ message: 'No se puede hacer la reserva' });
+    // Creating reservations for available services
+    if (roomAvailability) {
+      await createRoomReservation({ ...req, body: { ...req.body, reservationNumber } }, res);
+    }
+    if (carAvailability) {
+      await createCarReservation({ ...req, body: { ...req.body, reservationNumber } }, res);
+    }
+    if (spaAvailability) {
+      await createSpaReservation({ ...req, body: { ...req.body, reservationNumber } }, res);
     }
 
-   
-    let newReservation;
-    if (service === 'room') {
-      newReservation = await createRoomReservation(reservationDetails);
-    } else if (service === 'car') {
-      newReservation = await createCarReservation(reservationDetails);
-    } else if (service === 'spa') {
-      newReservation = await createSpaReservation(reservationDetails);
-    }
+    // Sending success response after all reservations
+    res.status(200).json({ message: 'All reservations created successfully', reservationNumber });
 
-    res.status(201).json(newReservation);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error al hacer la reserva' });
+    res.status(500).json({ message: 'Error creating reservation' });
   }
 };
 
-
-const checkRoomReservation = async ({ user_id, check_in_date, check_out_date }) => {
-
-};
-
-
-const checkCarReservation = async ({ user_id, checkInDateTime, checkOutDateTime }) => {
-  // Lógica para verificar si la reserva de coche puede ser hecha
-  // Retorna true si se puede hacer la reserva, false de lo contrario
-};
-
-// Función para verificar la reserva de spa
-const checkSpaReservation = async ({ user_id, checkInDateTime, checkOutDateTime }) => {
-  // Lógica para verificar si la reserva de spa puede ser hecha
-  // Retorna true si se puede hacer la reserva, false de lo contrario
-};
-
-module.exports = { makeReservation };
+module.exports = { createReservation };
