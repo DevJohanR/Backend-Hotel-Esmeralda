@@ -1,4 +1,10 @@
-const { reservations, rooms } = require("../../db"); // Asegúrate de que este path sea correcto
+const {
+  reservations,
+  rooms,
+  users,
+  spa_reservations,
+  car_reservations,
+} = require("../../db"); // Asegúrate de que este path sea correcto
 const crypto = require("crypto");
 const { Op } = require("sequelize");
 
@@ -17,87 +23,121 @@ const generateReservationNumber = () => {
 
 const createReservation = async (req, res, next) => {
   try {
-    const { user_id, check_in_date, check_out_date, room_id } = req.body;
-
-    // Obtener el precio por noche de la habitación
-    console.log(user_id, check_in_date, check_out_date, room_id);
-
-    const room = await rooms.findByPk(room_id);
-    if (!room) {
-      return res.status(404).json({ message: "Habitación no encontrada" });
-    }
-    const pricePerNight = room.price_per_night; // Asegúrate de que 'price_per_night' es el nombre correcto del campo en tu modelo de habitación
-
-    // Calcular el total_price basado en el precio por noche y la duración de la estancia
-    const checkInDate = new Date(check_in_date);
-    const checkOutDate = new Date(check_out_date);
-    const nights = Math.ceil(
-      (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
-    );
-    const totalPrice = pricePerNight * nights;
-
-    // Establecer la hora de check-in a las 3 PM y la hora de check-out a las 12 PM
-    checkInDate.setHours(10, 0, 0, 0); // 3 PM
-    checkOutDate.setHours(7, 0, 0, 0); // 12 PM
-
-    // Verificar si el usuario ya tiene una reserva pendiente para las fechas solicitadas
-    const existingReservation = await reservations.findOne({
-      where: {
-        user_id,
-        status: "pending",
-        [Op.or]: [
-          {
-            check_in_date: {
-              [Op.lte]: checkOutDate,
-              [Op.gte]: checkInDate,
-            },
-          },
-          {
-            check_out_date: {
-              [Op.lte]: checkOutDate,
-              [Op.gte]: checkInDate,
-            },
-          },
-        ],
-      },
-    });
-
-    if (existingReservation) {
-      return res
-        .status(400)
-        .json({ message: "Ya tienes una reserva pendiente para esa fecha" });
-    }
-
-    let reservationNumber = generateReservationNumber();
-
-    const existingReservationNumber = await reservations.findOne({
-      where: {
-        reservation_number: reservationNumber,
-        status: {
-          [Op.ne]: "finalized",
-        },
-      },
-    });
-
-    if (existingReservationNumber) {
-      reservationNumber = generateReservationNumber();
-    }
-
-    // Crea una nueva instancia de reserva
-    const newReservation = await reservations.create({
-      reservation_number: reservationNumber,
+    const {
+      total_price,
       user_id,
-      check_in_date: checkInDate,
-      check_out_date: checkOutDate,
-      status: "pending",
-      total_price: totalPrice,
+      check_in_date_room,
+      check_out_date_room,
+      check_in_time,
+      check_out_time,
       room_id,
-    });
 
-    res.status(201).json(newReservation);
+      spa_id,
+      check_in_date_spa,
+      check_out_date_spa,
+
+      car_id,
+      check_in_date_car,
+      check_out_date_car,
+    } = req.body;
+
+    const user = await users.findByPk(user_id);
+    const reservation = await reservations.findOne({ where: { user_id } });
+    const carsReservationsPrevs = await car_reservations.findOne({
+      where: { user_id },
+    });
+    const spaReservationsPrevs = await spa_reservations.findOne({
+      where: { user_id },
+    });
+    const reservationNumber = generateReservationNumber();
+    if (!reservation) {
+      const checkInDateRoom = new Date(check_in_date_room);
+      const checkOutDateRoom = new Date(check_out_date_room);
+
+      const createReservationRoom = await reservations.create({
+        check_in_date: checkInDateRoom,
+        check_out_date: checkOutDateRoom,
+        check_in_time,
+        check_out_time,
+        room_id,
+        user_id,
+        reservation_number: reservationNumber,
+        total_price,
+      });
+
+      let spa_res = {};
+      let car_res = {};
+
+      if (!spaReservationsPrevs) {
+        if (spa_id) {
+          // Si quiere reservar un spa
+          const createSpaReservation = await spa_reservations.create({
+            reservation_number: reservationNumber,
+            user_id,
+            spa_id,
+            checkInDateTime: check_in_date_spa,
+            checkOutDateTime: check_out_date_spa,
+            total_price,
+          });
+          spa_res = createSpaReservation;
+        }
+      }
+      if (!carsReservationsPrevs) {
+        if (car_id) {
+          // Si quiere reservar un auto
+          const createCarReservation = await car_reservations.create({
+            reservation_number: reservationNumber,
+            user_id,
+            car_id,
+            check_in_date: check_in_date_car,
+            check_out_date: check_out_date_car,
+            total_price,
+          });
+          car_res = createCarReservation;
+        }
+      }
+
+      res
+        .status(200)
+        .json({ spa: spa_res, room: createReservationRoom, car: car_res });
+    } else {
+      //** Acá caera cuando el usuario ya tiene una reserva de habitacion */
+      let spa_res = {};
+      let car_res = {};
+
+      if (!spaReservationsPrevs) {
+        if (spa_id) {
+          // Si quiere reservar un spa
+          const createSpaReservation = await spa_reservations.create({
+            reservation_number: reservationNumber,
+            user_id,
+            spa_id,
+            checkInDateTime: check_in_date_spa,
+            checkOutDateTime: check_out_date_spa,
+            total_price,
+          });
+          spa_res = createSpaReservation;
+        }
+      }
+      if (!carsReservationsPrevs) {
+        if (car_id) {
+          // Si quiere reservar un auto
+          const createCarReservation = await car_reservations.create({
+            reservation_number: reservationNumber,
+            user_id,
+            car_id,
+            check_in_date: check_in_date_car,
+            check_out_date: check_out_date_car,
+            total_price,
+          });
+          car_res = createCarReservation;
+        }
+      }
+
+      res.status(200).json({ spa: spa_res, room: reservations, car: car_res });
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al crear la reserva" });
+    res.status(400).json({ error: error.message });
   }
 };
 
