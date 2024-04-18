@@ -15,15 +15,15 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    spaReservation_id: { 
+    spa_reservation_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    carReservation_id: { 
+    carReservation_Id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    restaurantReservation_id: { 
+    restaurantReservation_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },

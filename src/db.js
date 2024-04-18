@@ -86,7 +86,9 @@ user_reservations.belongsTo(spa_reservations, {
 });
 
 reservations.hasOne(user_reservations, { foreignKey: "reservation_id" });
-spa_reservations.hasOne(reservations, { foreignKey: "spa_reservation_id" });
+spa_reservations.hasOne(user_reservations, {
+  foreignKey: "spa_reservation_id",
+});
 
 //RELACION RESERVA CARS
 
