@@ -3,9 +3,10 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   return sequelize.define("car_reservations", {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      allowNull: false,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     reservation_number: {
       type: DataTypes.STRING,
@@ -13,6 +14,10 @@ module.exports = (sequelize) => {
       unique: true,
     },
     user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    car_id: {
       type: DataTypes.UUID,
       allowNull: false,
     },
@@ -32,10 +37,6 @@ module.exports = (sequelize) => {
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
-    },
-    car_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
+    }
   });
 };
