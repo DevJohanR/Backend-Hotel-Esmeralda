@@ -15,11 +15,11 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    checkInDateTime: {
+    check_in_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    checkOutDateTime: {
+    check_out_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    room_id: {
+    spa_room_id: {
       type: DataTypes.UUID,
       allowNull: false,
     },
