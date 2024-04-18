@@ -68,7 +68,7 @@ const createRoom = async (req, res) => {
     await transaction.rollback();
     console.log(error);
 
-    return res.status(500).json(error);
+    return res.status(500).json({error:error.message});
   }
 };
 
