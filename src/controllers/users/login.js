@@ -30,6 +30,9 @@ const login = async (req, res) => {
           "El correo electrónico o el nombre de usuario son incorrectos.",
       });
     }
+    if (!user.is_active) {
+      return res.status(401).send("El usuario no esta activo");
+    }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 

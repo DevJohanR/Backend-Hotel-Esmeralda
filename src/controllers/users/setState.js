@@ -10,7 +10,7 @@ async function setState(req, res) {
         message: "Missing id",
       });
 
-    if (!state)
+    if (state === undefined)
       return res.status(400).json({
         message: "Missing state",
       });
@@ -20,10 +20,13 @@ async function setState(req, res) {
         message: "Unauthorized",
       });
 
-    const user = await users.findById(id);
+    console.log("id", id);
+    const user = await users.findOne({ where: { id } });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    user.state = state;
+    console.log("user", user);
+    user.is_active = state;
+    console.log("user", user);
     user.save();
 
     return res.json({
