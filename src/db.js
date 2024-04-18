@@ -79,9 +79,6 @@ spa_reservations.belongsTo(users, { foreignKey: "user_id" });
 spa_reservations.belongsTo(room_spa, { foreignKey: "spa_room_id" });
 room_spa.hasMany(spa_reservations, { foreignKey: "spa_room_id" });
 
-
-
-
 //RELACION RESERVA CARS
 
 users.hasMany(car_reservations, { foreignKey: "user_id" });
