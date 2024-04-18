@@ -8,8 +8,9 @@ const { userInfo } = require("../../controllers/users/userInfo");
 const { updateProfile } = require("../../controllers/users/updateProfile");
 const { confirmEmail } = require("../../controllers/email/sendgridController");
 const updateGuestProfilePhoto = require("../../controllers/users/updatePhoto");
+const { requestPasswordReset } = require("../../controllers/password/requestPasswordReset");
+const { resetPassword } = require("../../controllers/password/passwordReset");
 const upload = require("../../controllers/uploads3/multerConfig");
-const { requestPasswordReset, resetPassword } = require("../../controllers/passwordResetController/passwordResetController");
 
 
 const router = Router();

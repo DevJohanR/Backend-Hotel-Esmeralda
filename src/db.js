@@ -2,7 +2,6 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const DB_CONFIG = require("./db_config");
-const spaReservations = require("./models/spa_reservations");
 
 const sslOptions = {
   rejectUnauthorized: false,
