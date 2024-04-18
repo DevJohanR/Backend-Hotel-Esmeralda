@@ -16,15 +16,15 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    spa_reservation_id: { 
+    spa_reservation_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
-    car_reservation_id: { 
+    car_reservation_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
-    restaurant_reservation_id: { 
+    restaurant_reservation_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
