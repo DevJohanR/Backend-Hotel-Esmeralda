@@ -3,9 +3,14 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   return sequelize.define("spa_reservations", {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      allowNull: false,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+    },
+    spa_room_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
     reservation_number: {
       type: DataTypes.STRING,
@@ -15,11 +20,11 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    checkInDateTime: {
+    check_in_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    checkOutDateTime: {
+    check_out_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
@@ -31,10 +36,6 @@ module.exports = (sequelize) => {
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
-    },
-    room_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
+    }
   });
 };
