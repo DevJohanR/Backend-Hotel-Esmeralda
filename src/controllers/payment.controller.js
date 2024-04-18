@@ -32,7 +32,7 @@ const createSession = async (req, res) => {
     });
 
     const reservationDetails = JSON.stringify({ services, totalPrice });
-    await sendReservationConfirmationEmail({ username: 'izan7777', email: 'iohan7777@proton.me', reservationDetails });
+    await sendReservationConfirmationEmail({ username: 'izan7777', email: 'iohan7777@proton.me', reservationDetails });/* username:username */ /* actualizar para enviar - controlador */
 
     console.log(session.url);
     return res.json({ url: session.url });
