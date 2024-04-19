@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
     transmision: {
       type: DataTypes.ENUM("Manual", "Automatic", "Hybrid"),
       allowNull: false,
-      defaultValue: "Manual",
+      defaultValue: "Manual", // Cambiado de 'manual' a 'Manual', pilas muchachos
     },
     passenger: {
       type: DataTypes.INTEGER,

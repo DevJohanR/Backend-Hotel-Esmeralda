@@ -7,6 +7,7 @@ const updateProfile = async (req, res) => {
       req.file ? req.file : "No se cargó ningún archivo"
     );
 
+    const { role } = req.query;
     const { userId } = req.params;
     const {
       full_name,

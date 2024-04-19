@@ -5,8 +5,9 @@ const {
   spa_reservations,
   car_reservations,
 } = require("../../db"); // Asegúrate de que este path sea correcto
+
 const crypto = require("crypto");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
 // Función para generar un número de reserva aleatorio
 const generateReservationNumber = () => {
@@ -23,22 +24,20 @@ const generateReservationNumber = () => {
 
 const createReservation = async (req, res, next) => {
   try {
+    const { car_details: [car] } = req.body
+
+
+    // const { car_id, price_per_day, total_days } = car;
+
     const {
-      total_price,
-      user_id,
-      check_in_date_room,
-      check_out_date_room,
-      check_in_time,
-      check_out_time,
-      room_id,
-
+       user_id,
       spa_id,
-      check_in_date_spa,
-      check_out_date_spa,
-
       car_id,
-      check_in_date_car,
-      check_out_date_car,
+      room_id,
+      check_in_date,
+      check_out_date,
+      capacity,
+      total_price,
     } = req.body;
 
     const user = await users.findByPk(user_id);
@@ -51,14 +50,14 @@ const createReservation = async (req, res, next) => {
     });
     const reservationNumber = generateReservationNumber();
     if (!reservation) {
-      const checkInDateRoom = new Date(check_in_date_room);
-      const checkOutDateRoom = new Date(check_out_date_room);
+      const checkInDateRoom = new Date(check_in_date);
+      const checkOutDateRoom = new Date(check_out_date);
 
       const createReservationRoom = await reservations.create({
         check_in_date: checkInDateRoom,
         check_out_date: checkOutDateRoom,
-        check_in_time,
-        check_out_time,
+        check_in_time: 15000,
+        check_out_time: 10000,
         room_id,
         user_id,
         reservation_number: reservationNumber,
@@ -75,8 +74,8 @@ const createReservation = async (req, res, next) => {
             reservation_number: reservationNumber,
             user_id,
             spa_id,
-            checkInDateTime: check_in_date_spa,
-            checkOutDateTime: check_out_date_spa,
+            checkInDateTime: checkInDateRoom,
+            checkOutDateTime: checkOutDateRoom,
             total_price,
           });
           spa_res = createSpaReservation;
@@ -84,14 +83,15 @@ const createReservation = async (req, res, next) => {
       }
       if (!carsReservationsPrevs) {
         if (car_id) {
+          const totalCarprice = price_per_day * total_days
           // Si quiere reservar un auto
           const createCarReservation = await car_reservations.create({
             reservation_number: reservationNumber,
             user_id,
             car_id,
-            check_in_date: check_in_date_car,
-            check_out_date: check_out_date_car,
-            total_price,
+            check_in_date: checkInDateRoom,
+            check_out_date: checkOutDateRoom,
+            total_price: totalCarprice,
           });
           car_res = createCarReservation;
         }
@@ -102,6 +102,12 @@ const createReservation = async (req, res, next) => {
         .json({ spa: spa_res, room: createReservationRoom, car: car_res });
     } else {
       //** Acá caera cuando el usuario ya tiene una reserva de habitacion */
+
+      const createdReservationNumberForUser = await reservations.findByPk(user_id, { attributes: reservation_number },)
+      const datareservation = createdReservationNumberForUser
+
+      console.log(datareservation)
+
       let spa_res = {};
       let car_res = {};
 
@@ -109,11 +115,11 @@ const createReservation = async (req, res, next) => {
         if (spa_id) {
           // Si quiere reservar un spa
           const createSpaReservation = await spa_reservations.create({
-            reservation_number: reservationNumber,
+            reservation_number: datareservation,
             user_id,
             spa_id,
-            checkInDateTime: check_in_date_spa,
-            checkOutDateTime: check_out_date_spa,
+            checkInDateTime: check_in_date,
+            checkOutDateTime: check_out_date,
             total_price,
           });
           spa_res = createSpaReservation;
@@ -123,11 +129,11 @@ const createReservation = async (req, res, next) => {
         if (car_id) {
           // Si quiere reservar un auto
           const createCarReservation = await car_reservations.create({
-            reservation_number: reservationNumber,
+            reservation_number: datareservation,
             user_id,
             car_id,
-            check_in_date: check_in_date_car,
-            check_out_date: check_out_date_car,
+            check_in_date: check_in_date,
+            check_out_date: check_out_date,
             total_price,
           });
           car_res = createCarReservation;

@@ -3,28 +3,29 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   return sequelize.define("user_reservations", {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      allowNull: false,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      type: DataTypes.UUID,
+      allowNull: true,
     },
-    roomReservation_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    spaReservation_id: { 
+    room_reservation_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    carReservation_id: { 
-      type: DataTypes.INTEGER,
+    spa_reservation_id: {
+      type: DataTypes.UUID,
       allowNull: true,
     },
-    restaurantReservation_id: { 
-      type: DataTypes.INTEGER,
+    car_reservation_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
+    restaurant_reservation_id: {
+      type: DataTypes.UUID,
       allowNull: true,
     },
     total_price: {
