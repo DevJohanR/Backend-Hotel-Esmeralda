@@ -9,7 +9,7 @@ exports.sendConfirmationEmail = async (req, res) => {
             include: [
                 { model: users },
                 {
-                    model: room_details,
+                    model: room_details,//reservation
                     as: 'roomDetails'  // Asegúrate que las relaciones están correctamente definidas en tu modelo
                 },
                 {

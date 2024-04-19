@@ -44,8 +44,8 @@ const createReservation = async (req, res, next) => {
     const existingReservation = await reservations.findOne({
       where: {
         user_id,
-        status: "pending",
-        [Op.or]: [
+        status: "pending", //EL SECRETO!!! CUANDO SE CREA LA RESERVA EL ESTADO INICIAL ES PENDIENTE , DESPUES CUANDO LA RESERVA , RESERVATION NUMBER CAMBIA EL ESTADO A FINALIZADO
+        [Op.or]: [// QUE IMPLICA QUE UNA 
           {
             check_in_date: {
               [Op.lte]: checkOutDate,
