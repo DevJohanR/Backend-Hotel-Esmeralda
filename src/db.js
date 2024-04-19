@@ -41,6 +41,7 @@ modelDefiners.forEach((model) => model(sequelize));
 
 // Destructuring de los modelos
 const {
+  tables,
   guest_profile,
   reservations,
   room_details,

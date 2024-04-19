@@ -38,6 +38,6 @@ module.exports = (sequelize) => {
       defaultValue: "pending",
     },
   }, {
-    timestamps: false  // Correctamente colocado para deshabilitar createdAt y updatedAt
+    timestamps: false  
   });
 };

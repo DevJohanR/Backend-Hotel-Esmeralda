@@ -36,7 +36,6 @@ const createReservation = async (req, res, next) => {
       room_id,
       check_in_date,
       check_out_date,
-      capacity,
       total_price,
     } = req.body;
 
@@ -83,7 +82,7 @@ const createReservation = async (req, res, next) => {
       }
       if (!carsReservationsPrevs) {
         if (car_id) {
-          const totalCarprice = price_per_day * total_days
+          // const totalCarprice = price_per_day * total_days
           // Si quiere reservar un auto
           const createCarReservation = await car_reservations.create({
             reservation_number: reservationNumber,
@@ -91,7 +90,7 @@ const createReservation = async (req, res, next) => {
             car_id,
             check_in_date: checkInDateRoom,
             check_out_date: checkOutDateRoom,
-            total_price: totalCarprice,
+            total_price,
           });
           car_res = createCarReservation;
         }
