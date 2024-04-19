@@ -31,7 +31,7 @@ const authenticateToken = (req, res, next) => {
       if (verify === "HotelR&S**2024") return res.status(201).json({ user });
 
       req.user = user;
-      next();
+      return next();
     });
   } catch (error) {
     console.error("Error al autenticar el Token:", error);
