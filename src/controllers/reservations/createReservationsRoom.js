@@ -1,4 +1,4 @@
-const { reservations, rooms } = require("../../db"); // Asegúrate de que este path sea correcto
+const { reservations, rooms, user_reservations } = require("../../db");
 const crypto = require("crypto");
 const { Op } = require("sequelize");
 
@@ -19,16 +19,12 @@ const createReservation = async (req, res, next) => {
   try {
     const { user_id, check_in_date, check_out_date, room_id } = req.body;
 
-    // Obtener el precio por noche de la habitación
-    console.log(user_id, check_in_date, check_out_date, room_id);
-
     const room = await rooms.findByPk(room_id);
     if (!room) {
       return res.status(404).json({ message: "Habitación no encontrada" });
     }
-    const pricePerNight = room.price_per_night; // Asegúrate de que 'price_per_night' es el nombre correcto del campo en tu modelo de habitación
+    const pricePerNight = room.price_per_night;
 
-    // Calcular el total_price basado en el precio por noche y la duración de la estancia
     const checkInDate = new Date(check_in_date);
     const checkOutDate = new Date(check_out_date);
     const nights = Math.ceil(
@@ -36,11 +32,9 @@ const createReservation = async (req, res, next) => {
     );
     const totalPrice = pricePerNight * nights;
 
-    // Establecer la hora de check-in a las 3 PM y la hora de check-out a las 12 PM
-    checkInDate.setHours(10, 0, 0, 0); // 3 PM
-    checkOutDate.setHours(7, 0, 0, 0); // 12 PM
+    checkInDate.setHours(10, 0, 0, 0);
+    checkOutDate.setHours(7, 0, 0, 0);
 
-    // Verificar si el usuario ya tiene una reserva pendiente para las fechas solicitadas
     const existingReservation = await reservations.findOne({
       where: {
         user_id,
@@ -83,7 +77,6 @@ const createReservation = async (req, res, next) => {
       reservationNumber = generateReservationNumber();
     }
 
-    // Crea una nueva instancia de reserva
     const newReservation = await reservations.create({
       reservation_number: reservationNumber,
       user_id,
@@ -92,6 +85,13 @@ const createReservation = async (req, res, next) => {
       status: "pending",
       total_price: totalPrice,
       room_id,
+    });
+
+    await user_reservations.create({
+      user_id,
+      room_reservation_id: newReservation.id,
+      total_price: totalPrice,
+      status: "pending",
     });
 
     res.status(201).json(newReservation);

@@ -5,18 +5,17 @@ const { updateRoom } = require("../../controllers/rooms/updateRoom");
 const { getRoomDetails } = require("../../controllers/rooms/getRoomDetails");
 const { deleteRoom } = require("../../controllers/rooms/deleteRoom");
 const { authenticateToken } = require("../../helpers/authenticateToken");
-const { findAvailableRoom } = require("../../controllers/rooms/findAvailableRoom");
-
+const {
+  findAvailableRoom,
+} = require("../../controllers/rooms/findAvailableRoom");
 
 const router = Router();
 
-
-
-router.post("/",authenticateToken, createRoom);
+router.post("/", createRoom);
 router.get("/", listRooms);
 router.get("/available", findAvailableRoom);
-router.patch("/:id",authenticateToken, updateRoom);
+router.patch("/:id", authenticateToken, updateRoom);
 router.get("/:id", getRoomDetails);
-router.delete("/:id",authenticateToken, deleteRoom);
+router.delete("/:id", authenticateToken, deleteRoom);
 
 module.exports = router;
