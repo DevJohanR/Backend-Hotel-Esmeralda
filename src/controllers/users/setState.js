@@ -41,4 +41,4 @@ async function setState(req, res) {
   }
 }
 
-module.exports = setState;
+module.exports = {setState};
