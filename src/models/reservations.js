@@ -4,12 +4,11 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   return sequelize.define("reservations", {
     id: {
-      // type: DataTypes.UUID,
       type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
-      // defaultValue: DataTypes.UUIDV4,
+      
     },
     reservation_number: {
       type: DataTypes.STRING,
@@ -36,10 +35,10 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     status: {
-      type: DataTypes.ENUM("pending", "confirmed", "finalized", "cancelled"),
+      type: DataTypes.ENUM('pending', 'confirmed', 'finalized', 'cancelled'),
       allowNull: false,
-      defaultValue: "pending",
-    },
+      defaultValue: 'pending',
+   },
     total_price: {
       type: DataTypes.FLOAT,
       allowNull: true,

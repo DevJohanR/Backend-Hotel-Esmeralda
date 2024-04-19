@@ -1,6 +1,6 @@
 const { users } = require("../../db");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt"); // Import bcrypt
+const bcrypt = require("bcrypt"); 
 
 // Endpoint to reset the password
 const resetPassword = async (req, res) => {
@@ -14,7 +14,7 @@ const resetPassword = async (req, res) => {
       }
   
       // Hash the new password before saving
-      const hashedPassword = await bcrypt.hash(newPassword, 10); // 10 is the salt rounds
+      const hashedPassword = await bcrypt.hash(newPassword, 10); 
       user.password = hashedPassword;
       await user.save();
       res.status(200).json({ message: 'Password reset successfully.' });

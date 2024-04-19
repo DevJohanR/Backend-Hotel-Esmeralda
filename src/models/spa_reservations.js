@@ -29,10 +29,10 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("active", "cancelled", "completed"),
+      type: DataTypes.ENUM('pending', 'confirmed', 'finalized', 'cancelled'),
       allowNull: false,
-      defaultValue: "active",
-    },
+      defaultValue: 'pending',
+   },
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,

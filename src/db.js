@@ -14,6 +14,7 @@ const sequelize = new Sequelize(
 
   {
     logging: false,
+    dialect: 'postgres',
     dialectOptions: {
       ssl: isLocal ? false : sslOptions,
     },

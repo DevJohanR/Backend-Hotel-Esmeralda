@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { reset } = require("nodemon");
 
 // Función para generar un token JWT de un solo uso
 const generateEmailVerificationToken = (email, username) => {
@@ -22,7 +21,6 @@ const generatePasswordReset = (email) => {
   try {
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "5m",
-      password_reset: true, 
     });
     console.log("Token generado:", token);
 

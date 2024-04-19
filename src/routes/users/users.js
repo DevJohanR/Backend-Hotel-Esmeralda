@@ -12,9 +12,11 @@ const { requestPasswordReset } = require("../../controllers/password/requestPass
 const { resetPassword } = require("../../controllers/password/passwordReset");
 const upload = require("../../controllers/uploads3/multerConfig");
 const { setState } = require("../../controllers/users/setState");
+const { createUserReservation } = require("../../controllers/users/userReservations");
 
 const router = Router();
 
+router.post("/user-reservation", createUserReservation);
 router.post("/register", register);
 router.get("/checkUser", checkUserExists);
 router.get("/allUsers", authenticateToken, getAllUsers);
