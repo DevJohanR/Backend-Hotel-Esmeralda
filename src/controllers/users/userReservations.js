@@ -1,67 +1,117 @@
-const { connect } = require('../../db'); // Usamos solo la instancia correcta de Sequelize
+const {
+  reservations,
+  rooms,
+  car_reservations,
+  user_reservations,
+} = require("../../db");
+const crypto = require("crypto");
+const { Op } = require("sequelize");
+const { Sequelize } = require("sequelize");
+const { connect } = require("../../db");
 
-// Importaciones de funciones para reservaciones
-const { createCarReservation } = require('../cars/reservation_car');
-const { createReservation } = require('../reservations/createReservations');
+// Función para generar un número de reserva aleatorio
+const generateReservationNumber = () => {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let reservationNumber = "";
+  for (let i = 0; i < 3; i++) {
+    reservationNumber += letters.charAt(crypto.randomInt(letters.length));
+  }
+  for (let i = 0; i < 3; i++) {
+    reservationNumber += crypto.randomInt(10);
+  }
+  return reservationNumber;
+};
 
-// Función para crear reservación de habitación
-async function createRoomReservation(data, transaction) {
-  if (!data) throw new Error("Datos de reserva de habitación no proporcionados");
-  return createReservation(data, { transaction });
-}
-
-// Función para crear reservación de vehículo
-async function createVehicleReservation(data, transaction) {
-  if (!data) throw new Error("Datos de reserva de coche no proporcionados");
-  return createCarReservation(data, { transaction });
-}
-
-// Función principal para crear la reserva de usuario
 const createUserReservation = async (req, res) => {
-  const { user_id, room_reservation_data, car_reservation_data } = req.body;
-  
-  // Iniciar transacción
-  const t = await connect.transaction();
-  
   try {
-    let total_price = 0;
-    let roomReservationId = null;
-    let carReservationId = null;
-
-    // Crear reserva de habitación si se proporcionan los datos
-    if (room_reservation_data) {
-      const roomReservation = await createRoomReservation(room_reservation_data, t);
-      total_price += roomReservation.total_price;
-      roomReservationId = roomReservation.id;
-    }
-
-    // Crear reserva de coche si se proporcionan los datos
-    if (car_reservation_data) {
-      const carReservation = await createVehicleReservation(car_reservation_data, t);
-      total_price += carReservation.total_price;
-      carReservationId = carReservation.id;
-    }
-
-    // Verificar que al menos se haya creado una reserva
-    if (!roomReservationId && !carReservationId) {
-      await t.rollback();
-      return res.status(400).json({ message: "No se creó ninguna reserva" });
-    }
-
-    // Crear reserva de usuario con transacción
-    const userReservation = await connect.models.user_reservations.create({
+    const {
       user_id,
-      room_reservation_id: roomReservationId,
-      car_reservation_id: carReservationId,
+      check_in_date,
+      check_out_date,
+      room_id,
+      car_id,
       total_price,
-    }, { transaction: t });
+    } = req.body;
+    const transaction = await connect.transaction();
 
-    await t.commit();
+    let reservationNumber = generateReservationNumber();
+    let reservationType = null;
+    let reservationData = null;
+
+    // Determinar si se trata de una reservación de habitación o de coche
+    if (room_id) {
+      reservationType = "room";
+      reservationData = {
+        check_in_date,
+        check_out_date,
+        room_id,
+      };
+    } else if (car_id) {
+      reservationType = "car";
+      reservationData = {
+        checkInDateTime: check_in_date,
+        checkOutDateTime: check_out_date,
+        car_id,
+        total_price,
+      };
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Tipo de reservación no especificado" });
+    }
+
+    let newReservation = null;
+    let reservationId = null;
+    if (reservationType === "room") {
+      // Lógica para crear una reservación de habitación
+      newReservation = await reservations.create(
+        {
+          reservation_number: reservationNumber,
+          user_id,
+          check_in_date: new Date(reservationData.check_in_date),
+          check_out_date: new Date(reservationData.check_out_date),
+          status: "pending",
+          total_price: total_price,
+          room_id: reservationData.room_id,
+        },
+        { transaction }
+      );
+      reservationId = newReservation.id;
+    } else if (reservationType === "car") {
+      // Lógica para crear una reservación de coche
+      newReservation = await car_reservations.create(
+        {
+          reservation_number: reservationNumber,
+          user_id,
+          check_in_date: new Date(reservationData.checkInDateTime),
+          check_out_date: new Date(reservationData.checkOutDateTime),
+          status: "pending",
+          total_price: reservationData.total_price,
+          car_id: reservationData.car_id,
+        },
+        { transaction }
+      );
+      reservationId = newReservation.id;
+    }
+
+    // Crear una entrada en user_reservations
+    const userReservation = await user_reservations.create(
+      {
+        user_id,
+        room_reservation_id: reservationType === "room" ? reservationId : null,
+        car_reservation_id: reservationType === "car" ? reservationId : null,
+        total_price: total_price, // Asegúrate de que este valor sea correcto
+        status: "pending", // Puedes ajustar el estado según sea necesario
+      },
+      { transaction }
+    );
+
+    await transaction.commit();
     res.status(201).json(userReservation);
   } catch (error) {
-    await t.rollback();
-    console.error('Error al crear la reserva de usuario:', error);
-      res.status(400).json({ message: 'Error al crear la reserva de usuario', error });
+    await transaction.rollback();
+    console.error(error);
+    res.status(500).json({ message: "Error al crear la reservación", error });
   }
 };
 
