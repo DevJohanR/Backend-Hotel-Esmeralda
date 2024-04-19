@@ -79,8 +79,8 @@ spa_reservations.belongsTo(users, { foreignKey: "user_id" });
 spa_reservations.belongsTo(room_spa, { foreignKey: "spa_room_id" });
 room_spa.hasMany(spa_reservations, { foreignKey: "spa_room_id" });
 
-
-
+reservations.hasOne(user_reservations, { foreignKey: "reservation_id" });
+spa_reservations.hasOne(reservations, { foreignKey: "spa_reservation_id" });
 
 //RELACION RESERVA CARS
 
@@ -97,23 +97,34 @@ restaurant_reserv.belongsTo(users, { foreignKey: "user_id" });
 
 //All reservations
 
-user_reservations.belongsTo(reservations, { foreignKey: "room_reservation_id" });
+user_reservations.belongsTo(reservations, {
+  foreignKey: "room_reservation_id",
+});
 reservations.hasOne(user_reservations, { foreignKey: "room_reservation_id" });
 
-user_reservations.belongsTo(spa_reservations, {foreignKey: "spa_reservation_id"});
-spa_reservations.hasOne(user_reservations, {foreignKey: "spa_reservation_id"});
+user_reservations.belongsTo(spa_reservations, {
+  foreignKey: "spa_reservation_id",
+});
+spa_reservations.hasOne(user_reservations, {
+  foreignKey: "spa_reservation_id",
+});
 
 users.hasMany(user_reservations, { foreignKey: "user_id" });
 user_reservations.belongsTo(users, { foreignKey: "user_id" });
 
-user_reservations.belongsTo(restaurant_reserv, { foreignKey: "restaurant_reservation_id" });
-restaurant_reserv.hasMany(user_reservations, { foreignKey: "restaurant_reservation_id" });
+user_reservations.belongsTo(restaurant_reserv, {
+  foreignKey: "restaurant_reservation_id",
+});
+restaurant_reserv.hasMany(user_reservations, {
+  foreignKey: "restaurant_reservation_id",
+});
 
-user_reservations.belongsTo(car_reservations, { foreignKey: "car_reservation_id" });
-car_reservations.hasMany(user_reservations, { foreignKey: "car_reservation_id" });
-
-
-
+user_reservations.belongsTo(car_reservations, {
+  foreignKey: "car_reservation_id",
+});
+car_reservations.hasMany(user_reservations, {
+  foreignKey: "car_reservation_id",
+});
 
 module.exports = {
   ...sequelize.models,
