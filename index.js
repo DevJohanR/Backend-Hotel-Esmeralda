@@ -8,8 +8,10 @@ const { DB_PORT, SOCKET_IO_PORT } = process.env;
 const initializeSocketServer = require('./socketHandler'); 
 const cors = require('cors');
 
-const app = express();
+const app = require('./src/app');
 const httpServer = http.createServer(app);
+
+
 
 httpServer.listen(DB_PORT, () => {
   console.log(`Main server running on port ${DB_PORT}`);
