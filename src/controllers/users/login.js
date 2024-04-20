@@ -23,12 +23,16 @@ const login = async (req, res) => {
       },
     });
 
-    console.log(user);
     if (!user) {
       return res.status(401).json({
         message:
           "El correo electrónico o el nombre de usuario son incorrectos.",
       });
+    }
+    console.log(user);
+
+    if (user.is_active === false) {
+      return res.status(401).json({ message: "El usuario no esta activo" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);

@@ -6,9 +6,17 @@ const getReservations = async (req, res, next) => {
     const allReservations = id
       ? await reservations.findAll({
           where: { id: id },
-          include: { all: true },
+          include: [
+            { model: rooms },
+            { model: users, include: [{ model: guest_profile }] },
+          ],
         })
-      : await reservations.findAll({ include: { all: true } });
+      : await reservations.findAll({
+          include: [
+            { model: rooms },
+            { model: users, include: [{ model: guest_profile }] },
+          ],
+        });
     console.log("allReservations", allReservations);
     return res.status(200).json(allReservations);
   } catch (error) {

@@ -4,6 +4,7 @@ const upload = require("../uploads3/multerConfig");
 const updateGuestProfilePhoto = async (req, res) => {
   try {
     const uploadPhoto = upload.single("photo");
+    console.log("uploadPhoto", uploadPhoto);
     uploadPhoto(req, res, async function (err) {
       if (err) {
         return res.status(500).json({ error: err.message });

@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 
+
 module.exports = (sequelize) => {
   return sequelize.define("user_reservations", {
     id: {
@@ -16,15 +17,15 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    spa_reservation_id: { 
+    spa_reservation_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
-    car_reservation_id: { 
+    car_reservation_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
-    restaurant_reservation_id: { 
+    restaurant_reservation_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
@@ -33,9 +34,9 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("pending", "confirmed", "finalized", "cancelled"),
+      type: DataTypes.ENUM('pending', 'confirmed', 'finalized', 'cancelled'),
       allowNull: false,
-      defaultValue: "pending",
-    },
+      defaultValue: 'pending',
+   },
   });
 };

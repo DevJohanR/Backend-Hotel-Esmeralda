@@ -18,10 +18,10 @@ const updateProfile = async (req, res) => {
       birth,
     } = req.body;
 
-    const user = await users.findByPk(userId);
-    if (!user) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
+    // const user = await users.findByPk(userId);
+    // if (!user) {
+    //   return res.status(404).json({ error: "Usuario no encontrado" });
+    // }
 
     let guestProfile = await guest_profile.findOne({
       where: { user_id: userId },
@@ -36,6 +36,20 @@ const updateProfile = async (req, res) => {
         address,
         gender,
         birth,
+      });
+      const updatedUser = await users.findByPk(
+        { id: userId },
+        {
+          include: {
+            model: guest_profile,
+            as: "guest_profile",
+            required: false,
+          },
+        }
+      );
+      return res.status(201).json({
+        user: updatedUser,
+        message: "Guest profile created",
       });
     }
 

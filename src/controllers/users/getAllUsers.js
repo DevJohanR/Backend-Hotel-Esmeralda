@@ -13,6 +13,7 @@ const getAllUsers = async (req, res, next) => {
           attributes: { exclude: ["password"] },
         })
       : await users.findAll({
+          where: { role: "customer" },
           include: [{ model: guest_profile }],
           attributes: { exclude: ["password"] },
         });
