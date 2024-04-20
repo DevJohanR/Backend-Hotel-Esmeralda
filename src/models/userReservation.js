@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 
+
 module.exports = (sequelize) => {
   return sequelize.define("user_reservations", {
     id: {
@@ -33,9 +34,9 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("pending", "confirmed", "finalized", "cancelled"),
+      type: DataTypes.ENUM('pending', 'confirmed', 'finalized', 'cancelled'),
       allowNull: false,
-      defaultValue: "pending",
-    },
+      defaultValue: 'pending',
+   },
   });
 };

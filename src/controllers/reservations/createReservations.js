@@ -97,7 +97,7 @@ const createReservation = async (req, res, next) => {
     res.status(201).json(newReservation);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error al crear la reserva" });
+    res.status(400).json({ message: "Error al crear la reserva", error });
   }
 };
 

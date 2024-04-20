@@ -1,4 +1,4 @@
-const { users } = require("../../db");
+const { users, guest_profile } = require("../../db");
 
 async function setState(req, res) {
   try {
@@ -21,7 +21,10 @@ async function setState(req, res) {
       });
 
     console.log("id", id);
-    const user = await users.findOne({ where: { id } });
+    const user = await users.findOne({
+      where: { id },
+      include: [{ model: guest_profile }],
+    });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     console.log("user", user);
@@ -41,4 +44,4 @@ async function setState(req, res) {
   }
 }
 
-module.exports = setState;
+module.exports = { setState };
