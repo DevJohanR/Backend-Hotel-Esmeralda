@@ -46,8 +46,8 @@ const createSession = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: "payment",
-      success_url: `${baseUrl}bookingSuccess`,
-      cancel_url: `${baseUrl}bookingFail`,
+      success_url: `https://hotelesmeralda.netlify.app/bookingSuccess`,
+      cancel_url: `https://hotelesmeralda.netlify.app/bookingFail`,
       metadata: {
         user_id: userId,
         services: JSON.stringify(services),
