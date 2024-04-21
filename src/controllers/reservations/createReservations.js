@@ -1,4 +1,4 @@
-const { reservations, rooms } = require("../../db"); // Asegúrate de que este path sea correcto
+const { reservations, rooms, user_reservations } = require("../../db"); // Asegúrate de que este path sea correcto
 const crypto = require("crypto");
 const { Op } = require("sequelize");
 
@@ -37,8 +37,8 @@ const createReservation = async (req, res, next) => {
     const totalPrice = pricePerNight * nights;
 
     // Establecer la hora de check-in a las 3 PM y la hora de check-out a las 12 PM
-    checkInDate.setHours(10, 0, 0, 0); // 3 PM
-    checkOutDate.setHours(7, 0, 0, 0); // 12 PM
+    checkInDate.setHours(10, 0, 0, 0); 
+    checkOutDate.setHours(7, 0, 0, 0); 
 
     // Verificar si el usuario ya tiene una reserva pendiente para las fechas solicitadas
     const existingReservation = await reservations.findOne({
@@ -93,6 +93,15 @@ const createReservation = async (req, res, next) => {
       total_price: totalPrice,
       room_id,
     });
+        // Guardar los datos de la reserva en user_reservations
+        await user_reservations.create({
+          user_id,
+          reservation_number: generateReservationNumber(),
+          room_reservation_id: newReservation.id,
+          car_reservation_id: null, 
+          total_price: totalPrice,
+          status: "pending"
+        });
 
     res.status(201).json(newReservation);
   } catch (error) {
