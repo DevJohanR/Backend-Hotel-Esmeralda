@@ -56,10 +56,10 @@ const createSession = async (req, res) => {
 
     const reservation = await user_reservations.create({
       user_id: userId,
-      stripe_session_id: session.id,
-      room_id: services.room.id,
-      spa_id: services.spa.id,
-      car_id: services.car.id,
+      stripe_session_id: session?.id,
+      room_id: services?.room?.id,
+      spa_id: services?.spa?.id,
+      car_id: services?.car?.id,
       check_in_date: services.room.check_in_date,
       check_out_date: services.room.check_out_date,
       total_price: totalPrice, 

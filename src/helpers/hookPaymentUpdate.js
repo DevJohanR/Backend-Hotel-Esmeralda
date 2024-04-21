@@ -1,20 +1,17 @@
 const { user_reservations } = require('../db');
-const Stripe = require('stripe');
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 const bodyParser = require('body-parser');
 
-
-const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
-
-// Configurar middleware para analizar el cuerpo de la solicitud como una cadena sin procesar
-const rawBodyParser = bodyParser.raw({ type: '*/*' });
+// Configurar middleware para analizar el cuerpo de la solicitud como JSON
+const jsonBodyParser = bodyParser.json();
 
 const handleStripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
   try {
-    // Parsear el cuerpo de la solicitud como una cadena sin procesar
-    await rawBodyParser(req, res);
+    // Parsear el cuerpo de la solicitud como JSON
+    await jsonBodyParser(req, res);
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error(`Webhook Error: ${err.message}`);
