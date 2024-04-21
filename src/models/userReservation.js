@@ -62,11 +62,11 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     check_in_time: {
-      type: DataTypes.TIME,
+      type: DataTypes.DATE,
       allowNull: true,
     },
     check_out_time: {
-      type: DataTypes.TIME,
+      type: DataTypes.DATE,
       allowNull: true,
     },
     total_price: {

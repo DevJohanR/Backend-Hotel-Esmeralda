@@ -1,14 +1,14 @@
-const { reservations, rooms } = require('../../db'); 
+const { user_reservations, rooms } = require('../../db'); 
 
 const checkinReservations = async (req, res, next) => {
   try {
     const { reservation_number } = req.body;
 
     // Buscar la reserva por número de reserva
-    const reservation = await reservations.findOne({
+    const reservation = await user_reservations.findOne({
       where: {
         reservation_number: reservation_number,
-        status: 'pending'
+        status: 'pending' 
       }
     });
 
@@ -19,7 +19,7 @@ const checkinReservations = async (req, res, next) => {
     const checkInTime = new Date();
     await reservation.update({
       check_in_time: checkInTime,
-      status: 'confirmed'
+      status: 'confirmed' 
     });
 
     // Obtener la habitación asociada a la reserva

@@ -2,6 +2,8 @@ const Stripe = require("stripe");
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 const { user_reservations } = require("../db");
 
+const baseUrl = process.env.BASE_URL;
+
 const createSession = async (req, res) => {
   try {
     const { userId, services, totalPrice } = req.body;
@@ -44,8 +46,8 @@ const createSession = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://localhost:3000/bookingSuccess",
-      cancel_url: "http://localhost:3000/bookingFail",
+      success_url: `${baseUrl}bookingSuccess`,
+      cancel_url: `${baseUrl}bookingFail`,
       metadata: {
         user_id: userId,
         services: JSON.stringify(services),
