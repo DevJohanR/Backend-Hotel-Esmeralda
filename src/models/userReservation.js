@@ -37,20 +37,36 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    room_reservation_id: {
+    room_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    spa_reservation_id: {
+    spa_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
-    car_reservation_id: {
+    car_id: {
       type: DataTypes.UUID,
       allowNull: true,
     },
     restaurant_reservation_id: {
       type: DataTypes.UUID,
+      allowNull: true,
+    },
+    check_in_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    check_out_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    check_in_time: {
+      type: DataTypes.TIME,
+      allowNull: true,
+    },
+    check_out_time: {
+      type: DataTypes.TIME,
       allowNull: true,
     },
     total_price: {

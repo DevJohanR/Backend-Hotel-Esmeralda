@@ -16,7 +16,6 @@ const { createUserReservation } = require("../../controllers/users/userReservati
 
 const router = Router();
 
-router.post("/user-reservation", createUserReservation);
 router.post("/register", register);
 router.get("/checkUser", checkUserExists);
 router.get("/allUsers", authenticateToken, getAllUsers);
