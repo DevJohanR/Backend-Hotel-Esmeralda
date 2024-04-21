@@ -3,10 +3,10 @@ const { createCar } = require("../../controllers/cars/createCar");
 const { listCar } = require("../../controllers/cars/listCars");
 const { deleteCar } = require("../../controllers/cars/deleteCar");
 const { editCars } = require("../../controllers/cars/editCar");
-const {createCarReservation,} = require("../../controllers/cars/reservation_car");
 const { editCarReservation } = require("../../controllers/cars/edit_reserv");
 const {cancelCarReservation,} = require("../../controllers/cars/cancel_reserv");
 const { findAvailableCar } = require("../../controllers/cars/findAvailableCar");
+const { createCarReservation } = require("../../controllers/cars/createCarReservation");
 
 const router = Router();
 

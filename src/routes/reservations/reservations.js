@@ -27,10 +27,12 @@ const {
 const {
   deleteReservation,
 } = require("../../controllers/reservations/deleteReservation");
+const { createAllReservations } = require("../../controllers/userReservations/createAllReservations");
 
 const router = Router();
 
 router.post("/", authenticateToken, createReservation);
+router.post("/createAllReservations", createAllReservations);
 router.get("/", getReservations);
 router.get("/:id", getReservations);
 router.delete("/:id", authenticateToken, deleteReservation);
