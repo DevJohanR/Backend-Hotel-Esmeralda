@@ -30,7 +30,7 @@ const {
 
 const router = Router();
 
-router.post("/", createReservation);
+router.post("/", authenticateToken, createReservation);
 router.get("/", getReservations);
 router.get("/:id", getReservations);
 router.delete("/:id", authenticateToken, deleteReservation);

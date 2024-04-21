@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 function initializeSocketServer(httpServer) {
   const socketIOInstance = socketIO(httpServer, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: ["https://hotelesmeralda.netlify.app", "http://localhost:3000"],
       methods: ["GET", "POST"],
       allowedHeaders: ["my-custom-header"],
       credentials: true
