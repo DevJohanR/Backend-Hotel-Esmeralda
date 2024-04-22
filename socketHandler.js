@@ -5,8 +5,8 @@ function initializeSocketServer(httpServer) {
     cors: {
       origin: "*",
       methods: ["GET", "POST"],
-      allowedHeaders: ["my-custom-header"],
-      credentials: true,
+      // allowedHeaders: ["my-custom-header"],
+      // credentials: true,
     },
   });
 
