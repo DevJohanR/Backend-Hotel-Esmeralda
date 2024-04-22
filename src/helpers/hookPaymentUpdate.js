@@ -9,9 +9,7 @@ const handleStripeWebhook = async (req, res) => {
 
   try {
     console.log('Constructing event...');
-    // Convertir el cuerpo de la solicitud a una cadena si es un objeto
-    const requestBody = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? JSON.stringify(req.body) : req.body;
-    event = stripe.webhooks.constructEvent(requestBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     console.log('Event constructed:', event);
   } catch (err) {
     console.error(`Webhook Error: ${err.message}`);
@@ -29,9 +27,20 @@ const handleStripeWebhook = async (req, res) => {
       
       if (reservation) {
         console.log('Updating reservation status...');
-        reservation.status = 'pay';
+        const paymentStatus = session.payment_status || '';
+        let newReservationStatus = 'pending'; 
+        if (paymentStatus === 'paid') {
+          newReservationStatus = 'pay';
+        } else if (paymentStatus === 'pending') {
+          newReservationStatus = 'confirmed';
+        } else if (paymentStatus === 'failed' || paymentStatus === 'canceled') {
+          newReservationStatus = 'cancelled';
+        }
+
+        // Actualizar el estado de la reserva
+        reservation.status = newReservationStatus;
         await reservation.save();
-        console.log('Reservation status updated to pay');
+        console.log(`Reservation status updated to ${reservation.status}`);
       }
     } catch (error) {
       console.error('Error updating reservation status:', error);
