@@ -28,7 +28,7 @@ const {
   deleteReservation,
 } = require("../../controllers/reservations/deleteReservation");
 const { createAllReservations } = require("../../controllers/userReservations/createAllReservations");
-const { getAllReservations } = require("../../controllers/reservations/getAllreservations");
+const { getAllReservations } = require("../../controllers/userReservations/getAllreservations");
 
 const router = Router();
 

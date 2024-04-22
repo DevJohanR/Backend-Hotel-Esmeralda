@@ -1,23 +1,21 @@
 const { user_reservations } = require('../db');
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
-const bodyParser = require('body-parser');
 
-// Configurar middleware para analizar el cuerpo de la solicitud como JSON
-const jsonBodyParser = bodyParser.json();
+
 
 const handleStripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
   try {
-    // Parsear el cuerpo de la solicitud como JSON
-    await jsonBodyParser(req, res);
+
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error(`Webhook Error: ${err.message}`);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
+  // Manejar el evento según su tipo
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     try {
@@ -34,6 +32,7 @@ const handleStripeWebhook = async (req, res) => {
     }
   }
 
+  // Enviar una respuesta al servidor de Stripe para confirmar la recepción del evento
   res.json({ received: true });
 };
 
