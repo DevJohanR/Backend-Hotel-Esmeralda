@@ -1,33 +1,30 @@
-//index.js
 require("dotenv").config();
-const express = require('express');
-const http = require('http');
+const express = require("express");
+const http = require("http");
 const initializers = require("./src/initializers");
 const { connect } = require("./src/db");
 const { DB_PORT, SOCKET_IO_PORT } = process.env;
-const initializeSocketServer = require('./socketHandler'); 
-const server = require("./src/app")
-const cors = require('cors');
+const initializeSocketServer = require("./socketHandler");
+const cors = require("cors");
 
-const httpServer = http.createServer(server);
+const app = require("./src/app");
+
+// Crear un servidor HTTP y pasarlo a Socket.IO
+const httpServer = http.createServer(app);
+
+// Inicializar el servidor de Socket.IO con el servidor HTTP compartido
+initializeSocketServer(httpServer);
 
 httpServer.listen(DB_PORT, () => {
   console.log(`Main server running on port ${DB_PORT}`);
 });
 
-// app.use(cors());
+app.use(cors());
 
-// Crear servidor de Socket.IO
-const socketServer = http.createServer();
+// No es necesario crear un servidor HTTP separado para Socket.IO
+// ya que httpServer ya está siendo utilizado para ambos propósitos
 
-// Inicializar el servidor de Socket.IO
-initializeSocketServer(socketServer);
-
-socketServer.listen(SOCKET_IO_PORT, () => {
-  console.log(`Socket.IO server running on port ${SOCKET_IO_PORT}`);
-});
-
-connect.sync({ alter:false }).then(() => {
+connect.sync({ alter: false }).then(() => {
   console.log(`Database connected`);
 
   initializers
@@ -35,5 +32,3 @@ connect.sync({ alter:false }).then(() => {
     .then(() => console.log("Initial Values Created"))
     .catch(() => console.log("Initial values already exists!"));
 });
-
-
