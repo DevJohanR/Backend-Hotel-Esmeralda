@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const http = require("http");
+const http = require("https");
 const initializers = require("./src/initializers");
 const { connect } = require("./src/db");
 const { DB_PORT, SOCKET_IO_PORT } = process.env;
