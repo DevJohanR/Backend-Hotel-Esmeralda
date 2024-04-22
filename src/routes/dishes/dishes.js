@@ -6,8 +6,8 @@ const { deleteDishes } = require('../../controllers/dishes/deleteDishes');
 
 const router = Router();
 
-router.post('/', createDish);
 router.get('/', getDishes);
+router.post('/', createDish);
 router.patch('/:id', editDishes); 
 router.delete('/:id', deleteDishes);
 
