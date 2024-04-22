@@ -1,7 +1,7 @@
-const socketIO = require("socket.io");
+const { Server } = require("socket.io");
 
 function initializeSocketServer(httpServer) {
-  const socketIOInstance = socketIO(httpServer, {
+  const socketIOInstance = new Server(httpServer, {
     cors: {
       origin: "*",
       methods: ["GET", "POST"],
