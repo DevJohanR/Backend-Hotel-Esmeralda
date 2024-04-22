@@ -9,7 +9,9 @@ const handleStripeWebhook = async (req, res) => {
 
   try {
     console.log('Constructing event...');
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    // Convertir el cuerpo de la solicitud a una cadena si es un objeto
+    const requestBody = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? JSON.stringify(req.body) : req.body;
+    event = stripe.webhooks.constructEvent(requestBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
     console.log('Event constructed:', event);
   } catch (err) {
     console.error(`Webhook Error: ${err.message}`);
