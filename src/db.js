@@ -4,23 +4,24 @@ const path = require("path");
 const DB_CONFIG = require("./db_config");
 
 const sslOptions = {
-  rejectUnauthorized: false
+  rejectUnauthorized: false,
 };
 
-const isLocal = process.env.APP_ENV === 'LOCAL';
+const isLocal = process.env.APP_ENV === "LOCAL";
 
 const sequelize = new Sequelize(
   `postgres://${DB_CONFIG.DB_USER}:${DB_CONFIG.DB_PASSWORD}@${DB_CONFIG.DB_HOST}:${DB_CONFIG.DB_PORT}/${DB_CONFIG.DB_NAME}`,
+
   {
     logging: false,
+    dialect: 'postgres',
     dialectOptions: {
-      ssl: isLocal ? false : sslOptions
-    }
+      ssl: isLocal ? false : sslOptions,
+    },
   }
 );
 
 console.log("Configuración de la base de datos:", DB_CONFIG);
-
 
 const basename = path.basename(__filename);
 
@@ -40,11 +41,23 @@ fs.readdirSync(path.join(__dirname, "/models"))
 modelDefiners.forEach((model) => model(sequelize));
 
 // Destructuring de los modelos
-const { guest_profile, reservations, room_details, rooms, room_types, users } =
-  sequelize.models;
+const {
+  guest_profile,
+  reservations,
+  room_details,
+  rooms,
+  room_types,
+  users,
+  spa_reservations,
+  car_reservations,
+  car_details,
+  room_spa,
+  user_reservations,
+  restaurant_reserv,
+} = sequelize.models;
 
 // Relaciones
-users.hasOne(guest_profile, { foreignKey: "user_id" });
+users.hasOne(guest_profile, { foreignKey: "user_id", onDelete: "CASCADE" });
 guest_profile.belongsTo(users, { foreignKey: "user_id" });
 
 reservations.belongsTo(rooms, { foreignKey: "room_id" });
@@ -58,6 +71,58 @@ room_details.belongsTo(rooms, { foreignKey: "room_id" });
 
 room_types.hasMany(rooms, { foreignKey: "type_id" });
 rooms.belongsTo(room_types, { foreignKey: "type_id" });
+
+//RELACIONES RESERVA SPA
+
+users.hasMany(spa_reservations, { foreignKey: "user_id" });
+spa_reservations.belongsTo(users, { foreignKey: "user_id" });
+
+spa_reservations.belongsTo(room_spa, { foreignKey: "spa_room_id" });
+room_spa.hasMany(spa_reservations, { foreignKey: "spa_room_id" });
+
+//RELACION RESERVA CARS
+
+users.hasMany(car_reservations, { foreignKey: "user_id" });
+car_reservations.belongsTo(users, { foreignKey: "user_id" });
+
+car_reservations.belongsTo(car_details, { foreignKey: "car_id" });
+car_details.hasMany(car_reservations, { foreignKey: "car_id" });
+
+// RESERVA RESTAURANT
+
+users.hasMany(restaurant_reserv, { foreignKey: "user_id" });
+restaurant_reserv.belongsTo(users, { foreignKey: "user_id" });
+
+//All reservations
+
+user_reservations.belongsTo(rooms, {
+  foreignKey: "room_id",
+});
+rooms.hasOne(user_reservations, { foreignKey: "room_id" });
+
+user_reservations.belongsTo(room_spa, {
+  foreignKey: "spa_id",
+});
+room_spa.hasOne(user_reservations, {
+  foreignKey: "spa_id",
+});
+
+users.hasMany(user_reservations, { foreignKey: "user_id" });
+user_reservations.belongsTo(users, { foreignKey: "user_id" });
+
+user_reservations.belongsTo(restaurant_reserv, {
+  foreignKey: "restaurant_reservation_id",
+});
+restaurant_reserv.hasMany(user_reservations, {
+  foreignKey: "restaurant_reservation_id",
+});
+
+user_reservations.belongsTo(car_details, {
+  foreignKey: "car_id",
+});
+car_details.hasMany(user_reservations, {
+  foreignKey: "car_id",
+});
 
 module.exports = {
   ...sequelize.models,

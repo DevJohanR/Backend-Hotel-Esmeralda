@@ -1,6 +1,5 @@
-const { rooms, room_details, room_types } = require("../db");
-const { connect } = require("../db");
-
+const { rooms, room_details, room_types } = require("../../db");
+const { connect } = require("../../db");
 
 exports.createRoomType = async (req, res) => {
   try {
@@ -26,10 +25,10 @@ exports.createRoomType = async (req, res) => {
 // Get roomTypes(No parameters=all, admitted parameters: name, id)
 exports.listRoomTypes = async (req, res) => {
   try {
-    const { name, id } = req.query;
+    const { id } = req.query;
     const whereClause = {};
-    if (name) whereClause.name = name;
-    if (id) whereClause.id = id;
+    if (id) whereClause.id = Number(id);
+    console.log(whereClause);
 
     const allRoomTypes = await room_types.findAll({ where: whereClause });
     return res.status(200).send(allRoomTypes);
@@ -38,7 +37,6 @@ exports.listRoomTypes = async (req, res) => {
   }
 };
 
-// Update RoomType
 exports.updateRoomTypeById = async (req, res) => {
   const transaction = await connect.transaction();
   try {
@@ -47,19 +45,22 @@ exports.updateRoomTypeById = async (req, res) => {
 
     let roomType = await room_types.findByPk(id, { transaction });
     if (!roomType) {
-      await transaction.rollback();
+      transaction.rollback();
       return res.status(404).send("Room not found");
     }
-    const result = await room_types.update(
+    await room_types.update(
       { name: name, description: description },
       { where: { id: id }, transaction }
     );
+    const updatedRoomType = await room_types.findByPk(id, { transaction });
     await transaction.commit();
-    if (result > 0) res.status(200).send("Room Type updated successfully!");
-    else return res.status(500).send("Error updating room type");
+    return res
+      .status(200)
+      .send({ message: "Habitacion actualizada con exito", updatedRoomType });
   } catch (error) {
-    await transaction.rollback();
-    return res.status(500).send("Error updating room: " + error.message);
+    transaction.rollback();
+    console.error("Error updating room:", error);
+    return res.status(500).send("Error updating room type");
   }
 };
 
@@ -78,8 +79,6 @@ exports.deleteRoomTypeById = async (req, res) => {
       await transaction.rollback();
       return res.status(404).send("Room Type not found");
     }
-
-    // Delete room type
     await room_types.destroy({ where: { id: id } }, { transaction });
 
     await transaction.commit();

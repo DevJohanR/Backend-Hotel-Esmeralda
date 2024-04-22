@@ -7,6 +7,10 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    photos: {
+      type: DataTypes.ARRAY(DataTypes.TEXT), 
+      allowNull: true,
+    },
     single_bed: {
       type: DataTypes.INTEGER,
       allowNull: true,
