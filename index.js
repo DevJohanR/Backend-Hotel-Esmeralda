@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const http = require("https");
+const http = require("http");
 const initializers = require("./src/initializers");
 const { connect } = require("./src/db");
 const { DB_PORT, SOCKET_IO_PORT } = process.env;
@@ -8,6 +8,12 @@ const initializeSocketServer = require("./socketHandler");
 const cors = require("cors");
 
 const app = require("./src/app");
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // Crear un servidor HTTP y pasarlo a Socket.IO
 const httpServer = http.createServer(app);
