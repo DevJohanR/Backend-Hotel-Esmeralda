@@ -6,6 +6,8 @@ const {
   room_details,
   room_spa,
   restaurant_reserv,
+  users,
+  guest_profile,
 } = require("../../db");
 
 const getUserReservations = async (req, res, next) => {
@@ -15,6 +17,7 @@ const getUserReservations = async (req, res, next) => {
     const userReservations = await user_reservations.findAll({
       where: { user_id: userId },
       include: [
+        {model: users, include: [guest_profile]},
         { model: rooms, include: [room_details], include: [room_types]},
         { model: car_details },
         { model: room_spa},
