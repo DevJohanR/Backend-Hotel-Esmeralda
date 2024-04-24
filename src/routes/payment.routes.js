@@ -14,4 +14,6 @@ router.post(
   handleStripeWebhook
 );
 
+router.use(express.json({ limit: "20mb" }));
+
 module.exports = router;
