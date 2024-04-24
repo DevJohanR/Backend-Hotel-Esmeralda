@@ -17,9 +17,7 @@ server.name = "API";
 server.use(cookieParser());
 server.use(morgan("dev"));
 server.use(cors());
-server.use(express.json({ limit: '20mb' }));
-server.use(express.urlencoded({ limit: '20mb', extended: true }));
-
+server.use(express.urlencoded({ limit: "20mb", extended: true }));
 // Routes
 server.use("/", routes);
 
