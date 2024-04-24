@@ -5,7 +5,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // Function to send password reset email
 const sendPasswordResetEmail = async ({ email }) => {
   const token = generatePasswordReset(email);
-  const resetUrl = `http://localhost:3000/passwordRecovery?token=${token}`;
+  const resetUrl = `https://hotelesmeralda.netlify.app/passwordRecovery?token=${token}`;
 
   const message = {
     to: email,
