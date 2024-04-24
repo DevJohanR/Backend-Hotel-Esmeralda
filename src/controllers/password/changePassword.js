@@ -23,7 +23,7 @@ const changePassword = async (req, res) => {
 
 
     const newToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: '1h', // Por ejemplo, 1 hora de validez
+      expiresIn: '1h',
     });
 
     res.status(200).json({ message: 'Contraseña cambiada con éxito', newToken });

@@ -3,7 +3,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendReservationConfirmationEmail = async ({ username, email }) => {
-  const UrlHotel = `http://localhost:3000/checkin`;
+  const UrlHotel = `https://hotelesmeralda.netlify.app/profile`;
   const message = {
     to: email,
     from: process.env.EMAIL_FROM,
