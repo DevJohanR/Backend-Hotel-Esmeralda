@@ -1,11 +1,11 @@
-const { reservations, rooms } = require('../../db');
+const { user_reservations, rooms } = require('../../db');
 
 const checkOutReservations = async (req, res, next) => {
  try {
     const { reservation_number } = req.body;
 
     // Buscar la reserva por número de reserva
-    const reservation = await reservations.findOne({
+    const reservation = await user_reservations.findOne({
       where: {
         reservation_number: reservation_number,
         status: 'confirmed' // Solo buscar reservas confirmadas
