@@ -4,10 +4,14 @@ const { restaurant_reserv, connect } = require("../../db");
 const createRestaurantReservation = async (req, res) => {
   const transaction = await connect.transaction();
   try {
-    const { user_id, number_of_diners, reservation_time } = req.body;
+    const { user_id, number_of_diners, reservation_day, reservation_hour } =
+      req.body;
 
-    // ver que la fecha de reserva sea válida y no esté en el pasado
-    if (new Date(reservation_time) < new Date()) {
+    const reservationTime = new Date(
+      `${reservation_day}T${reservation_hour}:00`
+    );
+
+    if (reservationTime < new Date()) {
       return res.status(400).send("Reservation time cannot be in the past");
     }
 
@@ -33,7 +37,7 @@ const createRestaurantReservation = async (req, res) => {
         user_id,
         number_of_diners,
         table_number: tableNumber,
-        reservation_time,
+        reservation_time: reservationTime, // fecha y hora combinadas
       },
       { transaction }
     );
