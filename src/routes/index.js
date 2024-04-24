@@ -8,6 +8,7 @@ const reservationsRoutes = require("./reservations/reservations");
 const reservationEmailRoutes = require("./reservationEmailRoutes/reservationEmailRoutes");
 const cars = require("./cars/cars");
 const spa = require("./roomSpa/roomSpa");
+const express = require("express");
 const { authenticateToken } = require("../helpers/authenticateToken");
 const paymentRoutes = require("./payment.routes");
 
@@ -18,6 +19,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/api/payments", paymentRoutes);
+router.use(express.json({ limit: "20mb" }));
 router.use("/api/dishes", dishesRoutes);
 router.use("/api/rooms", roomsRoutes);
 router.use("/api/cars", cars);
