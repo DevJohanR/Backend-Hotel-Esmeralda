@@ -10,6 +10,7 @@ const { confirmEmail } = require("../../controllers/email/sendgridController");
 const updateGuestProfilePhoto = require("../../controllers/users/updatePhoto");
 const { requestPasswordReset } = require("../../controllers/password/requestPasswordReset");
 const { resetPassword } = require("../../controllers/password/passwordReset");
+const { changePassword } = require("../../controllers/users/changePassword");
 const upload = require("../../controllers/uploads3/multerConfig");
 const { setState } = require("../../controllers/users/setState");
 const { createUserReservation } = require("../../controllers/users/userReservations");
@@ -29,5 +30,6 @@ router.patch("/set-state/:id", authenticateToken, setState);
 router.post("/", authenticateToken);
 router.post("/request-password-reset", requestPasswordReset);
 router.post("/reset-password", resetPassword);
+router.post("/change-password/:id", changePassword);
 
 module.exports = router;
