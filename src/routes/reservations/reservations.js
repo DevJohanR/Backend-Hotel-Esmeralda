@@ -36,6 +36,12 @@ const {
 const {
   allRestaurantReservation,
 } = require("../../controllers/restaurant_reserv/all_reserv");
+const {
+  confirmRestaurantReservation,
+} = require("../../controllers/restaurant_reserv/confirm_reserv");
+const {
+  finalizedRestaurantReservation,
+} = require("../../controllers/restaurant_reserv/finalized_reserv");
 
 const router = Router();
 
@@ -52,5 +58,7 @@ router.post("/restaurant", createRestaurantReservation);
 router.patch("/cancel_reserv/:id", cancelRestaurantReservation);
 router.patch("/edit_reserv/:id", editRestaurantReservation);
 router.get("/all_restaurant_reserv/:user_id", allRestaurantReservation);
+router.patch("/confirm_reserv/:id", confirmRestaurantReservation);
+router.patch("/finalized_reserv/:id", finalizedRestaurantReservation);
 
 module.exports = router;
