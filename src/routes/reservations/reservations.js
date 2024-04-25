@@ -51,6 +51,6 @@ router.get("/userReservations/:userId", getUserReservations);
 router.post("/restaurant", createRestaurantReservation);
 router.patch("/cancel_reserv/:id", cancelRestaurantReservation);
 router.patch("/edit_reserv/:id", editRestaurantReservation);
-router.get("/all_restaurant_reserv", allRestaurantReservation);
+router.get("/all_restaurant_reserv/:user_id", allRestaurantReservation);
 
 module.exports = router;
