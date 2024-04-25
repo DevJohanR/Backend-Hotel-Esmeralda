@@ -27,14 +27,21 @@ const {
 const {
   deleteReservation,
 } = require("../../controllers/reservations/deleteReservation");
-const { createAllReservations } = require("../../controllers/userReservations/createAllReservations");
-const { getAllReservations } = require("../../controllers/userReservations/getAllreservations");
+const {
+  createAllReservations,
+} = require("../../controllers/userReservations/createAllReservations");
+const {
+  getAllReservations,
+} = require("../../controllers/userReservations/getAllreservations");
+const {
+  allRestaurantReservation,
+} = require("../../controllers/restaurant_reserv/all_reserv");
 
 const router = Router();
 
 router.post("/", authenticateToken, createReservation);
 router.post("/createAllReservations", createAllReservations);
-router.get('/AllReservations', getAllReservations);
+router.get("/AllReservations", getAllReservations);
 router.get("/", getReservations);
 router.get("/:id", getReservations);
 router.delete("/:id", authenticateToken, deleteReservation);
@@ -44,5 +51,6 @@ router.get("/userReservations/:userId", getUserReservations);
 router.post("/restaurant", createRestaurantReservation);
 router.patch("/cancel_reserv/:id", cancelRestaurantReservation);
 router.patch("/edit_reserv/:id", editRestaurantReservation);
+router.get("/all_restaurant_reserv/:user_id", allRestaurantReservation);
 
 module.exports = router;
