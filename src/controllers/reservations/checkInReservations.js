@@ -1,14 +1,17 @@
 const { user_reservations, rooms } = require('../../db'); 
+const { Op } = require('sequelize');
+
 
 const checkinReservations = async (req, res, next) => {
   try {
     const { reservation_number } = req.body;
+    console.log('reservation_number', reservation_number);
 
     // Buscar la reserva por número de reserva
     const reservation = await user_reservations.findOne({
       where: {
         reservation_number: reservation_number,
-        status: 'pending' 
+        status: { [Op.or]: ['pending', 'pay'] } 
       }
     });
 
@@ -22,7 +25,6 @@ const checkinReservations = async (req, res, next) => {
       status: 'confirmed' 
     });
 
-    // Obtener la habitación asociada a la reserva
     const room = await rooms.findByPk(reservation.room_id);
 
     if (room) {
