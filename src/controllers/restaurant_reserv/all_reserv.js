@@ -1,16 +1,26 @@
-const { restaurant_reserv } = require("../../db");
+const { Sequelize } = require("sequelize");
+const { restaurant_reserv, connect } = require("../../db");
 
 const allRestaurantReservation = async (req, res) => {
   try {
-    const allReservations = await restaurant_reserv.findAll({
-      model: restaurant_reserv,
+    const { user_id } = req.params;
+
+    if (!user_id) {
+      return res.status(400).send("User ID is required");
+    }
+
+    const userReservations = await restaurant_reserv.findAll({
+      where: { user_id },
     });
-    res.status(200).json(allReservations);
+
+    if (!userReservations || userReservations.length === 0) {
+      return res.status(404).send("No reservations found for this user");
+    }
+
+    return res.status(200).send(userReservations);
   } catch (error) {
-    res.status(500).json({
-      message: "Error fetching reservations",
-      error: error.message,
-    });
+    console.log(error);
+    return res.status(500).json(error);
   }
 };
 
