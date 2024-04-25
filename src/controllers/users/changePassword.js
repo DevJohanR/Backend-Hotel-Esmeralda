@@ -13,8 +13,8 @@ const changePassword = async (req, res) => {
         const user = await users.findOne({
             where: { id: userId },
         });
-        console.log('mi current password es:',currentPassword,user.password)
-        console.log(user)
+        console.log('mi current password es:',currentPassword)
+        console.log('mi usuario es', user)
 
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
